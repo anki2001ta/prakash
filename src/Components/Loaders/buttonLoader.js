@@ -1,9 +1,9 @@
-// import React from 'react'
+import React from 'react'
 
-// const ButtonLoader = () => {
-//   return (
-//     <div class="buttonloader"></div>
-//   )
-// }
+const ButtonLoader = () => {
+  return (
+    <div class="buttonloader"></div>
+  )
+}
 
-// export default ButtonLoader
+export default ButtonLoader

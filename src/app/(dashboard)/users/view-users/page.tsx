@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 interface UserData {
+  userId: string;
+  is_active_userId: boolean;
   images?: string[];
   name: string;
   email: string;
@@ -51,67 +53,67 @@ const renderImageCell = (rowData: UserData) => {
   ));
 };
 
-
-
-const headerData = [
-  {
-    key: "sr.no",
-    label: "Sr no",
-  },
-  {
-    key: "images",
-    label: "Image",
-    renderCell: renderImageCell,
-  },
-  {
-    key: "name",
-    label: "Username",
-  },
-  {
-    key: "userid",
-    label: "User Id",
-  },
-  {
-    key: "mobile",
-    label: "Phone",
-  },
-  {
-    key: "diamonds",
-    label: "Diamonds",
-  },
-  {
-    key: "status",
-    label: "Status",
-    renderCell: (rowData: UserData) => (
-      <span style={{ color: rowData.status === "Active" ? "green" : "red" }}>
-        {rowData.status}
-      </span>
-    ),
-  },
+// const headerData = [
+//   {
+//     key: "sr.no",
+//     label: "Sr no",
+//   },
+//   {
+//     key: "images",
+//     label: "Image",
+//     renderCell: renderImageCell,
+//   },
+//   {
+//     key: "name",
+//     label: "Username",
+//   },
+//   {
+//     key: "userid",
+//     label: "User Id",
+//   },
+//   {
+//     key: "mobile",
+//     label: "Phone",
+//   },
+//   {
+//     key: "diamonds",
+//     label: "Diamonds",
+//   },
+//   {
+//     key: "status",
+//     label: "Status",
+//     renderCell: (rowData: UserData) => (
+//       <span className={`${rowData?.status === "Active" ? "text-green-500" : "text-red-500"}`}>
+//         {rowData?.status}
+//       </span>
+//     ),
+//   },
   
-  {
-    key: "action",
-    label: "Action",
-    renderCell: (_, index : any) => renderActionCell(index),
-  }
-];
+//   {
+//     key: "action",
+//     label: "Action",
+//     renderCell: (_, index : any) => renderActionCell(index),
+//   }
+// ];
 
 
 
 const ViewUser = () => {
-  const [userData,setUserData] = useState(null);
-  const [isLoading,setIsLoading] = useState(null);
+  const [userData,setUserData] = useState<any>(null);
+  const [isLoading,setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
+    
     fetchData();
   }, []);
 
   const fetchData = async () => {
+    setIsLoading(true)
     try {
       const response = await fetch(`https://techc2.be/user/getall`);
-      const data = await response.json();
-      const modifiedData = data.data.map((user: UserData, index: number) => ({
+      const data = await response?.json();
+      const modifiedData = data?.data?.map((user: UserData, index: number) => ({
         ...user,
         "sr.no": index + 1,
         name: user.name || "-",
@@ -121,7 +123,8 @@ const ViewUser = () => {
       }));
       setUserData(modifiedData);
       setIsLoading(false);
-    } catch (error) {
+    } 
+    catch (error) {
       console.error("Error fetching data:", error);
       setIsLoading(false);
     }
@@ -367,10 +370,15 @@ const ViewUser = () => {
       key: "diamonds",
       label: "Diamonds",
     },
-    {
-      key: "status",
-      label: "Status",
-    },
+     {
+    key: "status",
+    label: "Status",
+    renderCell: (rowData: UserData) => (
+      <span className={`${rowData?.status === "Active" ? "text-green-500" : "text-red-500"}`}>
+        {rowData?.status}
+      </span>
+    ),
+  },
     {
       key: "action",
       label: "Action",
@@ -379,7 +387,7 @@ const ViewUser = () => {
   ];
 
   return (<>
-    <TableComponent data={userData} headers={headerData} title="View Users" />
+    <TableComponent isLoading={isLoading} data={userData} headers={headerData} title="View Users" />
     </>
   );
 };

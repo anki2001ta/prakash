@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Title } from "@/components/atomics";
 import { SortAscendingIcon } from "@/assets/icons";
+import ButtonLoader from '../Loaders/buttonLoader'
 import Image from "next/image";
 
 interface TableProps {
@@ -9,6 +10,7 @@ interface TableProps {
   }[];
   headers: Header[];
   title: string;
+  isLoading?:boolean;
 }
 
 interface Header {
@@ -17,7 +19,7 @@ interface Header {
   renderCell?: (rowData: any) => JSX.Element | null;
 }
 
-const TableComponent: React.FC<TableProps> = ({ data, headers, title }) => {
+const TableComponent: React.FC<TableProps> = ({ data, headers, title, isLoading }) => {
   const convertToCSV = () => {
     if (!data) return;
 
@@ -47,13 +49,12 @@ const TableComponent: React.FC<TableProps> = ({ data, headers, title }) => {
     return rowData[header.key];
   };
 
-  if (!data) {
-    return <p>No data available</p>;
-  }
 
   return (
-    <div className="relative p-6 space-y-6">
-      <section className="relative p-6 bg-white rounded-lg">
+    <>
+      
+   <div className="relative p-6 space-y-6">
+      <section className="relative p-6 bg-white rounded-lg"> ̰
         <nav className="flex items-center justify-between mb-8">
           <Title size="sm" variant="default" className="text-netral-25">
             {title}
@@ -76,7 +77,7 @@ const TableComponent: React.FC<TableProps> = ({ data, headers, title }) => {
           <table className="w-full table-auto">
             <thead className="font-semibold text-left bg-netral-15  w-[400px]">
               <tr>
-                {headers.map((header) => (
+                {headers?.map((header) => (
                   <th
                     key={header.key}
                     className={`px-4 py-3 whitespace-nowrap`}
@@ -88,7 +89,14 @@ const TableComponent: React.FC<TableProps> = ({ data, headers, title }) => {
             </thead>
             <tbody className="divide-y divide-netral-20">
               
-              {data.map((item, rowIndex) => (
+              {
+              
+              isLoading ? <div className=" w-full flex justify-center">
+                 <ButtonLoader/> 
+              </div> :
+              
+              
+              data?.map((item, rowIndex) => (
                 <tr key={rowIndex}>
                   {headers.map((header) => (
                     <td
@@ -101,12 +109,17 @@ const TableComponent: React.FC<TableProps> = ({ data, headers, title }) => {
                     </td>
                   ))}
                 </tr>
-              ))}
+              ))
+              
+              
+              }
             </tbody>
           </table>
         </div>
       </section>
     </div>
+    
+    </>
   );
 };
 

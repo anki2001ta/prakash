@@ -1,9 +1,7 @@
 import React from 'react'
 
-const pageLoader = () => {
+export default function PageLoader() {
   return (
-    <div>pageLoader</div>
+    <div className='page-loader'></div>
   )
 }
-
-export default pageLoader
