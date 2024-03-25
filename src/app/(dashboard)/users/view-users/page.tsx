@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Menu, Transition } from '@headlessui/react';
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import ModalComponent from "@/Components/Modal/Modal";
 
 interface UserData {
   userId: string;
@@ -52,6 +53,9 @@ const renderImageCell = (rowData: UserData) => {
     </div>
   ));
 };
+
+
+
 
 // const headerData = [
 //   {
@@ -102,7 +106,10 @@ const ViewUser = () => {
   const [userData,setUserData] = useState<any>(null);
   const [isLoading,setIsLoading] = useState<boolean>(false);
   const router = useRouter();
-
+  const [openDeleteModal, setIsOpenDeleteModal]=useState<boolean>(false);
+  const handleDeleteModal=(id:string)=> {
+    setIsOpenDeleteModal(true)
+  }
   useEffect(() => {
     
     fetchData();
@@ -111,7 +118,7 @@ const ViewUser = () => {
   const fetchData = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch(`https://techc2.be/user/getall`);
+      const response = await fetch(`https://fun2fun.live/user/getall`);
       const data = await response?.json();
       const modifiedData = data?.data?.map((user: UserData, index: number) => ({
         ...user,
@@ -254,7 +261,13 @@ const ViewUser = () => {
               role="menuitem"
               tabIndex={-1}
               id="menu-item-1"
-              onClick={() => router.push(`/users/view-users/edit-user/${user?._id}`)}
+              onClick={() => 
+                
+                
+                router.push(`/users/view-users/edit-user/${user?._id}`)}
+
+                
+              // onClick={()=>{setIsOpenEditModal(true)}}
             >
               Edit
             </button>
@@ -269,7 +282,7 @@ const ViewUser = () => {
               role="menuitem"
               tabIndex={-1}
               id="menu-item-2"
-              onClick={() => deleteUserHandler(user?.userId)}
+              onClick={() => handleDeleteModal(deleteUserHandler(user?.userId))}
             >
               Delete
             </button>
@@ -388,6 +401,20 @@ const ViewUser = () => {
 
   return (<>
     <TableComponent isLoading={isLoading} data={userData} headers={headerData} title="View Users" />
+    <ModalComponent
+        onAction={()=>{}}
+        isOpen={openDeleteModal}
+        setIsOpen={setIsOpenDeleteModal}
+        size="2xl"
+      >
+        <div>
+          <div className="p-12 flex justify-center w-full  text-white text-[20px]">
+            <p className="text-white text-[20px]">
+              Are You Sure You Want to Delete?
+            </p>
+          </div>
+        </div>
+      </ModalComponent>
     </>
   );
 };

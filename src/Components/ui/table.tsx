@@ -1,8 +1,7 @@
 import React from "react";
 import { Button, Title } from "@/components/atomics";
 import { SortAscendingIcon } from "@/assets/icons";
-import ButtonLoader from '../Loaders/buttonLoader'
-import Image from "next/image";
+import ButtonLoader from "../Loaders/buttonLoader";
 
 interface TableProps {
   data: {
@@ -10,7 +9,7 @@ interface TableProps {
   }[];
   headers: Header[];
   title: string;
-  isLoading?:boolean;
+  isLoading?: boolean;
 }
 
 interface Header {
@@ -19,7 +18,12 @@ interface Header {
   renderCell?: (rowData: any) => JSX.Element | null;
 }
 
-const TableComponent: React.FC<TableProps> = ({ data, headers, title, isLoading }) => {
+const TableComponent: React.FC<TableProps> = ({
+  data,
+  headers,
+  title,
+  isLoading,
+}) => {
   const convertToCSV = () => {
     if (!data) return;
 
@@ -49,76 +53,78 @@ const TableComponent: React.FC<TableProps> = ({ data, headers, title, isLoading 
     return rowData[header.key];
   };
 
-
   return (
     <>
-      
-   <div className="relative p-6 space-y-6">
-      <section className="relative p-6 bg-white rounded-lg"> ̰
-        <nav className="flex items-center justify-between mb-8">
-          <Title size="sm" variant="default" className="text-netral-25">
-            {title}
-          </Title>
-          <Button size="sm" variant="primary-bg" onClick={convertToCSV}>
-            Export CSV
-            <SortAscendingIcon className="w-4 h-4 stroke-2" />
-          </Button>
-        </nav>
-        <div className="flex justify-end mb-6">
-          <input
-            type="text"
-            autoComplete="email"
-            required
-            placeholder="Search Here"
-            className="w-72 px-4 py-2 rounded-md border border-gray-300 shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-netral-25 sm:text-sm"
-          />
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full table-auto">
-            <thead className="font-semibold text-left bg-netral-15  w-[400px]">
-              <tr>
-                {headers?.map((header) => (
-                  <th
-                    key={header.key}
-                    className={`px-4 py-3 whitespace-nowrap`}
-                  >
-                    {header.label}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-netral-20">
-              
-              {
-              
-              isLoading ? <div className=" w-full flex justify-center">
-                 <ButtonLoader/> 
-              </div> :
-              
-              
-              data?.map((item, rowIndex) => (
-                <tr key={rowIndex}>
-                  {headers.map((header) => (
-                    <td
+      <div className="relative p-6 space-y-6">
+        <section className="relative p-6 bg-white rounded-lg">
+          <nav className="flex items-center justify-between mb-8">
+            <Title size="sm" variant="default" className="text-netral-25">
+              {title}
+            </Title>
+            <Button size="sm" variant="primary-bg" onClick={convertToCSV}>
+              Export CSV
+              <SortAscendingIcon className="w-4 h-4 stroke-2" />
+            </Button>
+          </nav>
+          <div className="flex justify-end mb-6">
+            <input
+              type="text"
+              autoComplete="email"
+              required
+              placeholder="Search Here"
+              className="w-72 px-4 py-2 rounded-md border border-gray-300 shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-netral-25 sm:text-sm"
+            />
+          </div>
+          <div className="overflow-x-auto">
+            <table
+              className={`w-full table-auto ${
+                isLoading  ? 'h-[400px]' : ""
+              }`}
+            >
+              <thead className="font-semibold text-left bg-netral-15  w-[400px]">
+                <tr>
+                  {headers?.map((header) => (
+                    <th
                       key={header.key}
-                      className="px-4 py-4 "
+                      className={`px-4 py-3 whitespace-nowrap`}
                     >
-                      {header.renderCell
-                        ? renderCell(item, header)
-                        : item[header.key]}
-                    </td>
+                      {header.label}
+                    </th>
                   ))}
                 </tr>
-              ))
-              
-              
-              }
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
-    
+              </thead>
+              <tbody className="divide-y divide-netral-20">
+                {isLoading ? (
+                  <tr>
+                    <td
+                      colSpan={headers.length}
+                      className="px-4 py-4 text-center"
+                    >
+                      <div className="relative">
+                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                          <ButtonLoader />
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  data?.map((item, rowIndex) => (
+                    <tr key={rowIndex}>
+                      {headers.map((header) => (
+                        <td key={header.key} className="px-4 py-4 ">
+                          {header.renderCell
+                            ? renderCell(item, header)
+                            : item[header.key]}
+                        </td>
+                      ))}
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
     </>
   );
 };

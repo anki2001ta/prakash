@@ -19,8 +19,8 @@ const Alerts: React.FC<Alerts> = ({
   variant = 'error'
 }) => {
   setTimeout(() => {
-    setOpen(false)
-  }, 10000)
+    setOpen && setOpen(false)
+  }, 1000)
   return (
     <Toast.Provider swipeDirection='right'>
       <Toast.Root

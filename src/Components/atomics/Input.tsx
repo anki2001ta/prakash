@@ -11,7 +11,8 @@ interface Input {
   logoSrc?: string
   placeholder: string
   type?: "text" | "password"
-  value?: string
+  value?: string;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   variant?:
     | "default"
     | "default-error"
@@ -31,6 +32,7 @@ const Input: React.FC<Input> = ({
   logoSrc,
   message,
   placeholder,
+  onChange,
   type = "text",
   value,
   variant = "default"
@@ -116,6 +118,7 @@ const Input: React.FC<Input> = ({
           value={value}
           defaultValue={defaultValue}
           disabled={disabled}
+          onChange={onChange} 
         />
       </div>
 
