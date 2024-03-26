@@ -140,6 +140,9 @@ export default function Page({ params }: { params: { id: string } }) {
 
             <section className="flex flex-row items-start gap-2.5">
               <div className="w-72 space-y-1.5">
+                <div className="flex gap-4"></div>
+                <h1>Bio</h1>
+                <p>{data?.bio}</p>
                 <h5 className="text-body-sm uppercase text-netral-50">
                   Email Address
                 </h5>
@@ -159,15 +162,6 @@ export default function Page({ params }: { params: { id: string } }) {
                 ) : (
                   <p className="text-body-base font-medium">{data?.mobile}</p>
                 )}
-              </div>
-
-              <div className="w-72 space-y-1.5">
-                <h5 className="text-body-sm uppercase text-netral-50">
-                  Complete Address
-                </h5>
-                <p className="text-body-base font-medium">
-                  2972 Westheimer Rd. Santa Ana, Illinois 85486
-                </p>
               </div>
             </section>
           </div>
@@ -195,7 +189,7 @@ export default function Page({ params }: { params: { id: string } }) {
               <Switch
                 checked={data?.is_active_userId}
                 onChange={handleUserIdActive}
-                className={`${data?.is_active_userId  ? "bg-teal-900" : "bg-teal-700"}
+                className={`${data?.is_active_userId  ? "bg-[#9ACD31]" : "bg-[#9ACD31]/[0.6]"}
           relative inline-flex  w-[74px]  shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white/75`}
               >
                 <span
@@ -207,7 +201,7 @@ export default function Page({ params }: { params: { id: string } }) {
               <Switch
                 checked={data ? data?.is_active_live : false}
                 onChange={handleBanLive}
-                className={`${data?.is_active_live ? "bg-teal-900" : "bg-teal-700"}
+                className={`${data?.is_active_live ? "bg-[#9ACD31]" : "bg-[#9ACD31]/[0.6]"}
           relative inline-flex h-[38px] w-[74px]  shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white/75`}
               >
                 <span className="sr-only">Use setting</span>
@@ -220,7 +214,7 @@ export default function Page({ params }: { params: { id: string } }) {
               <Switch
                 checked={data ? data?.is_active_live : false}
                 onChange={handleBanLive}
-                className={`${data?.is_active_live ? "bg-teal-900" : "bg-teal-700"}
+                className={`${data?.is_active_live ? "bg-[#9ACD31]" : "bg-[#9ACD31]/[0.6]"}
           relative inline-flex h-[38px] w-[74px]  shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white/75`}
               >
                 <span className="sr-only">Use setting</span>
@@ -233,7 +227,7 @@ export default function Page({ params }: { params: { id: string } }) {
               <Switch
                 checked={data ? data?.is_active_live : false}
                 onChange={handleBanLive}
-                className={`${data?.is_active_live ? "bg-teal-900" : "bg-teal-700"}
+                className={`${data?.is_active_live ? "bg-[#9ACD31]" : "bg-[#9ACD31]/[0.6]"}
           relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white/75`}
               >
                 <span className="sr-only">Use setting</span>
@@ -268,7 +262,7 @@ export default function Page({ params }: { params: { id: string } }) {
               <Switch
                 checked={data ? data?.is_active_live : false}
                 onChange={handleBanLive}
-                className={`${data?.is_active_live ? "bg-teal-900" : "bg-teal-700"}
+                className={`${data?.is_active_live ? "bg-[#9ACD31]" : "bg-[#9ACD31]/[0.6]"}
           relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white/75`}
               >
                 <span className="sr-only">Use setting</span>

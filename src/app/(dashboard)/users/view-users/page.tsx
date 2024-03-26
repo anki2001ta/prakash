@@ -297,7 +297,7 @@ const ViewUser = () => {
               role="menuitem"
               tabIndex={-1}
               id="menu-item-3"
-              onClick={() => router.push(`/recieved-gift-history/${user?._id}`)}
+              onClick={() => router.push(`/users/recieved-gift-history/${user?._id}`)}
             >
               Recieved Gift History
             </button>
@@ -312,7 +312,7 @@ const ViewUser = () => {
               role="menuitem"
               tabIndex={-1}
               id="menu-item-4"
-              onClick={() => router.push(`/send-gift-history/${user?._id}`)}
+              onClick={() => router.push(`/users/send-gift-history/${user?._id}`)}
             >
               Send Gift History
             </button>
