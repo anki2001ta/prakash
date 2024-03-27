@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Title } from "@/components/atomics";
-import { SortAscendingIcon } from "@/assets/icons";
+import { PencilSimpleIcon, PlusIcon, SortAscendingIcon } from "@/assets/icons";
 import ButtonLoader from "../Loaders/buttonLoader";
 
 interface TableProps {
@@ -10,6 +10,8 @@ interface TableProps {
   headers: Header[];
   title: string;
   isLoading?: boolean;
+  isAdd?: boolean;
+  onAdd?:()=>void;
 }
 
 interface Header {
@@ -23,6 +25,8 @@ const TableComponent: React.FC<TableProps> = ({
   headers,
   title,
   isLoading,
+  isAdd = false,
+  onAdd
 }) => {
   const convertToCSV = () => {
     if (!data) return;
@@ -56,15 +60,23 @@ const TableComponent: React.FC<TableProps> = ({
   return (
     <>
       <div className="relative p-6 space-y-6">
-        <section className="relative p-6 bg-white rounded-lg">
+        <section className="relativ min-h-screen p-6 bg-white rounded-lg">
           <nav className="flex items-center justify-between mb-8">
             <Title size="sm" variant="default" className="text-netral-25">
               {title}
             </Title>
-            <Button size="sm" variant="primary-bg" onClick={convertToCSV}>
-              Export CSV
-              <SortAscendingIcon className="w-4 h-4 stroke-2" />
-            </Button>
+            <div className="flex gap-2 items-center">
+              <Button size="sm" variant="primary-bg" onClick={convertToCSV}>
+                Export CSV
+                <SortAscendingIcon className="w-4 h-4 stroke-2" />
+              </Button>
+              {isAdd && (
+                <Button size="sm" variant="default-bg"  className="bg-netral-25" onClick={onAdd}>
+                  Add Manager
+                  <PlusIcon className="w-4 h-4 stroke-2" />
+                </Button>
+              )}
+            </div>
           </nav>
           <div className="flex justify-end mb-6">
             <input
@@ -77,9 +89,7 @@ const TableComponent: React.FC<TableProps> = ({
           </div>
           <div className="overflow-x-auto">
             <table
-              className={`w-full table-auto ${
-                isLoading  ? 'h-[400px]' : ""
-              }`}
+              className={`w-full table-auto ${isLoading ? "h-[400px]" : ""}`}
             >
               <thead className="font-semibold text-left bg-netral-15  w-[400px]">
                 <tr>

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { Transition } from "@headlessui/react";
 
@@ -53,6 +53,7 @@ const Sidebar: React.FC = () => {
   const [showAgency, setShowAgencyMenu] = React.useState(false);
   const [showShop, setShowShop] = React.useState(false);
   const [showGift, setShowGift] = React.useState(false);
+  const [showManager, setShowManager]= React.useState(false)
   return (
     <aside
       id="sidebar"
@@ -114,10 +115,25 @@ const Sidebar: React.FC = () => {
             href="/users/push-notifications"
           />
         </SidebarExpand>
+        <SidebarMenu
+          active={showManager}
+          onClick={() => setShowManager(!showManager)}
+          icon={<ReceiptIcon />}
+          name="Manager" 
+          variant="sub-menu"
+        />
+
+        <SidebarExpand show={showManager}>
+          <SidebarMenu
+            name="View Manager"
+            variant="expand"
+            href="/manager/view-manager"
+          />
+        </SidebarExpand>
 
         {/* Hosts */}
 
-        <SidebarMenu
+        {/* <SidebarMenu
           active={showTransactionsMenu}
           onClick={() => setShowTransactionsMenu(!showTransactionsMenu)}
           icon={<ReceiptIcon />}
@@ -147,11 +163,11 @@ const Sidebar: React.FC = () => {
             variant="expand"
             href="/host/host-reports"
           />
-        </SidebarExpand>
+        </SidebarExpand> */}
 
         {/* AGENCY */}
 
-        <SidebarMenu
+        {/* <SidebarMenu
           active={showAgency}
           onClick={() => setShowAgencyMenu(!showAgency)}
           icon={<ReceiptIcon />}
@@ -187,19 +203,19 @@ const Sidebar: React.FC = () => {
             variant="expand"
             href="/agency/view-agency"
           />
-        </SidebarExpand>
+        </SidebarExpand> */}
 
         {/* Shop */}
-
+{/* 
         <SidebarMenu
           active={showShop}
           onClick={() => setShowShop(!showShop)}
           icon={<ReceiptIcon />}
           name="Shop"
           variant="sub-menu"
-        />
+        /> */}
 
-        <SidebarExpand show={showShop}>
+        {/* <SidebarExpand show={showShop}>
           <SidebarMenu
             name="Add Room Wallpaper"
             variant="expand"
@@ -293,11 +309,11 @@ const Sidebar: React.FC = () => {
             variant="expand"
             href="/transactions/manage-return"
           />
-        </SidebarExpand>
+        </SidebarExpand> */}
 
         {/* Gifts */}
 
-        <SidebarMenu
+        {/* <SidebarMenu
           active={showGift}
           onClick={() => setShowGift(!showGift)}
           icon={<ReceiptIcon />}
@@ -360,7 +376,7 @@ const Sidebar: React.FC = () => {
             variant="expand"
             href="/auth/success-reset"
           />
-        </SidebarExpand>
+        </SidebarExpand> */}
       </nav>
     </aside>
   );

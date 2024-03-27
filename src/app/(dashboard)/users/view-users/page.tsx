@@ -327,7 +327,7 @@ const ViewUser = () => {
               role="menuitem"
               tabIndex={-1}
               id="menu-item-5"
-              onClick={() => router.push(`/mannage-purchased-coin-history/${user?._id}`)}
+              onClick={() => router.push(`/users/coin-history/${user?._id}`)}
             >
               Coin History
             </button>
@@ -342,7 +342,7 @@ const ViewUser = () => {
               role="menuitem"
               tabIndex={-1}
               id="menu-item-6"
-              onClick={() => router.push(`/mannage-live-user-history/${user?._id}`)}
+              onClick={() => router.push(`/users/live-user-history/${user?._id}`)}
             >
               Live History
             </button>

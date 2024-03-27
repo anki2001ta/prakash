@@ -54,7 +54,7 @@ const Button: React.FC<Button> = ({
         (variant === "warning-bg" &&
           "Warning-Bg border-transparent bg-warning-main text-white hover:bg-warning-hover focus:ring-warning-border") ||
         (variant === "default-bg" &&
-          "Default-Bg border-transparent bg-netral-20 text-netral-100 hover:bg-netral-30 focus:border-netral-30 focus:ring-netral-40") ||
+          "Default-Bg border-transparent bg-netral-20 text-netral-100  focus:border-netral-30 focus:ring-netral-40") ||
         (variant === "primary-outline" &&
           "Primary-Outline border-primary-main bg-transparent text-primary-main hover:bg-primary-surface focus:ring-primary-border/25") ||
         (variant === "warning-outline" &&
