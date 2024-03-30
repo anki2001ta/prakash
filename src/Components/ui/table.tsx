@@ -121,11 +121,10 @@ const TableComponent: React.FC<TableProps> = ({
                   data?.map((item, rowIndex) => (
                     <tr key={rowIndex}>
                       {headers.map((header) => (
-                        <td key={header.key} className="px-4 py-4 ">
-                          {header.renderCell
-                            ? renderCell(item, header)
-                            : item[header.key]}
-                        </td>
+                     <td key={header.key} className="px-4 py-4 w-[100px] text-clip overflow-hidden ">
+                     {header.renderCell ? renderCell(item, header) : item[header.key]}
+                   </td>
+                   
                       ))}
                     </tr>
                   ))

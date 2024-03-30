@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import ModalComponent from "@/Components/Modal/Modal";
 import { Menu, Transition } from "@headlessui/react";
 import { Input } from "@/Components/atomics";
+import { Delete, Edit } from "@mui/icons-material";
 
 interface UserData {
   userId: string;
@@ -106,16 +107,29 @@ const ViewUser = () => {
   const [openDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
   const [openAddManagerModal, setOpenAddManagerModal] =
     useState<boolean>(false);
+  const [openEditManagerModal, setOpenEditManagerModal] =useState<boolean>(false);
   const [username, setUserName] = useState<string>("");
   const [userid, setUserId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [country, setCountry] = useState<string>("");
+  const [managerId, setManagerId] = useState<string>("");
   const handleDeleteModal = (id: string) => {
     setIsOpenDeleteModal(true);
   };
   useEffect(() => {
     fetchData();
   }, []);
+
+
+  const handleEditItem=(data:any)=>{
+    console.log("data is",data)
+  
+  }
+
+
+  const handleDeleteManager=()=> {
+    console.log("amager id", managerId)
+  }
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -132,37 +146,7 @@ const ViewUser = () => {
         userid: user.userId || "-",
       }));
 
-      const clonedData = [
-        {
-          "sr.no": 2,
-          name: "ddd",
-          mobile: "33",
-          status: true,
-          userid: "343",
-        },
-        {
-          "sr.no": 3,
-          name: "ddd",
-          mobile: "33",
-          status: true,
-          userid: "343",
-        },
-        {
-          "sr.no": 4,
-          name: "ddd",
-          mobile: "33",
-          status: true,
-          userid: "343",
-        },
-        {
-          "sr.no": 5,
-          name: "ddd",
-          mobile: "33",
-          status: true,
-          userid: "343",
-        },
-      ];
-      setUserData([...modifiedData, ...clonedData]);
+      setUserData([...modifiedData]);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -170,197 +154,6 @@ const ViewUser = () => {
     }
   };
 
-  const renderActionCell = (index: number, user: any) => {
-    return (
-      // <div className="relative inline-block text-left">
-      //   <div>
-      //                   <button
-      //                     className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-      //                     type="button"
-      //                     id="menu-button" aria-expanded="true" aria-haspopup="true"
-      //                   >
-      //                     <span>Action</span>
-      //                     <svg className="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-      //   <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-      // </svg>
-      //                   </button>
-      //                   </div>
-      //                   <ul className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-      //                     role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1"
-      //                   >
-      //                     <div className="py-1" role="none">
-      //                     <li
-      //                     className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0"
-      //                     >
-      //                       <button
-      //                         // className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0"
-      //                         // href={`/view-user/${user?._id}`}
-      //                       >
-      //                         View
-      //                       </button>
-      //                     </li>
-      //                     <li className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-1">
-      //                       <button
-      //                         className="dropdown-item"
-      //                         // href={`/edit-user/${user?._id}`}
-      //                       >
-      //                         Edit
-      //                       </button>
-      //                     </li>
-      //                     <li className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-2">
-      //                       <button
-      //                         className="dropdown-item"
-      //                         onClick={() => handleDelete(user?._id)}
-      //                       >
-      //                         Delete
-      //                       </button>
-      //                     </li>
-      //                     <li className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-3">
-      //                       <button
-      //                         className="dropdown-item"
-      //                         // href={`/recieved-gift-history/${user?._id}`}
-      //                       >
-      //                         Recieved Gift History
-      //                       </button>
-      //                     </li>
-      //                     <li className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-4">
-      //                       <button
-      //                         className="dropdown-item"
-      //                         // href={`/send-gift-history/${user?._id}`}
-      //                       >
-      //                         Send Gift History
-      //                       </button>
-      //                     </li>
-      //                     <li className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-5">
-      //                       <button
-      //                         className="dropdown-item"
-      //                         // href={`/mannage-purchased-coin-history/${user?._id}`}
-      //                       >
-      //                         Coin History
-      //                       </button>
-      //                     </li>
-      //                     <li className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-6">
-      //                       <button
-      //                         className="dropdown-item"
-      //                         // href={`/mannage-live-user-history/${user?._id}`}
-      //                       >
-      //                         Live History
-      //                       </button>
-      //                     </li>
-      //                     </div>
-      //                   </ul>
-      //                 </div>
-      <Menu as="div" className="relative inline-block text-left">
-        <div>
-          <Menu.Button className="inline-flex w-full justify-center items-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50  focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-lime-400">
-            <span>Action</span>
-            <svg
-              className="-mr-1 h-5 w-5 text-gray-400"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                fillRule="evenodd"
-                d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </Menu.Button>
-        </div>
-        <Transition
-          as={Fragment}
-          enter="transition ease-out duration-100"
-          enterFrom="transform opacity-0 scale-95"
-          enterTo="transform opacity-100 scale-100"
-          leave="transition ease-in duration-75"
-          leaveFrom="transform opacity-100 scale-100"
-          leaveTo="transform opacity-0 scale-95"
-        >
-          <Menu.Items
-            className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-            role="menu"
-            aria-orientation="vertical"
-            aria-labelledby="menu-button"
-            tabIndex={-1}
-          >
-            <div className="py-1" role="none">
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    className={`${
-                      active ? "bg-gray-100 text-gray-900" : "text-gray-700"
-                    } block px-4 py-2 text-sm w-full text-left`}
-                    role="menuitem"
-                    tabIndex={-1}
-                    id="menu-item-2"
-                    onClick={() =>
-                      handleDeleteModal(deleteUserHandler(user?.userId))
-                    }
-                  >
-                    Add
-                  </button>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    className={`${
-                      active ? "bg-gray-100 text-gray-900" : "text-gray-700"
-                    } block px-4 py-2 text-sm w-full text-left`}
-                    role="menuitem"
-                    tabIndex={-1}
-                    id="menu-item-0"
-                    onClick={() =>
-                      router.push(`/users/view-users/view-user/${user?._id}`)
-                    }
-                  >
-                    View
-                  </button>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    className={`${
-                      active ? "bg-gray-100 text-gray-900" : "text-gray-700"
-                    } block px-4 py-2 text-sm w-full text-left`}
-                    role="menuitem"
-                    tabIndex={-1}
-                    id="menu-item-1"
-                    onClick={() =>
-                      router.push(`/users/view-users/edit-user/${user?._id}`)
-                    }
-
-                    // onClick={()=>{setIsOpenEditModal(true)}}
-                  >
-                    Edit
-                  </button>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    className={`${
-                      active ? "bg-gray-100 text-gray-900" : "text-gray-700"
-                    } block px-4 py-2 text-sm w-full text-left`}
-                    role="menuitem"
-                    tabIndex={-1}
-                    id="menu-item-2"
-                    onClick={() =>
-                      handleDeleteModal(deleteUserHandler(user?.userId))
-                    }
-                  >
-                    Delete
-                  </button>
-                )}
-              </Menu.Item>
-            </div>
-          </Menu.Items>
-        </Transition>
-      </Menu>
-    );
-  };
 
   const headerData = [
     {
@@ -374,10 +167,6 @@ const ViewUser = () => {
     {
       key: "username",
       label: "UserName",
-    },
-    {
-      key: "countryCode",
-      label: "CountryCode",
     },
     {
       key: "is_active",
@@ -395,7 +184,15 @@ const ViewUser = () => {
     {
       key: "action",
       label: "Action",
-      renderCell: (_, index) => renderActionCell(index, _),
+      renderCell: (rowData:any) =>(
+        <div className="flex gap-2">
+          <div className="cursor-pointer" onClick={()=>handleEditItem(rowData)}><Edit/></div>
+          <div className="cursor-pointer" onClick={()=>{
+            setIsOpenDeleteModal(true)
+            setManagerId(rowData.userId);
+          }}><Delete/></div>
+        </div>
+      ),
     },
   ];
 
@@ -466,9 +263,9 @@ const ViewUser = () => {
         onAction={handleAddManager}
         isOpen={openAddManagerModal}
         setIsOpen={setOpenAddManagerModal}
-        size="4xl"
+        size="2xl"
       >
-        <div className="px-8 py-4 grid grid-cols-2 gap-x-5 gap-y-8">
+        <div className="px-8 py-4 grid grid-cols-1 gap-x-5 gap-y-8">
           <Input
             id="username"
             placeholder="Enter User Name"
@@ -494,41 +291,40 @@ const ViewUser = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+        </div>
+      </ModalComponent>
+      <ModalComponent
+        onAction={handleDeleteManager}
+        isOpen={openAddManagerModal}
+        setIsOpen={setOpenAddManagerModal}
+        size="2xl"
+      >
+        <div className="px-8 py-4 grid grid-cols-1 gap-x-5 gap-y-8">
+          <Input
+            id="username"
+            placeholder="Enter User Name"
+            label="User Name"
+            variant="default"
+            value={username}
+            onChange={(e) => setUserName(e.target.value)}
+          />
 
           <Input
-            id="country-code"
-            placeholder="Enter country code"
-            label="Country Code"
+            id="userid"
+            placeholder="Enter User Id"
+            label="Enter User Id"
             variant="default"
-            onChange={(e) => setCountry(e.target.value)}
+            value={userid}
+            onChange={(e) => setUserId(e.target.value)}
           />
-          {/* <Input
-                id="beans"
-                label="Beans"
-                variant="default"
-                placeholder="Beans"
-                value={userData?.beans}
-              /> */}
-          {/* <Input
-                id="diamonds"
-                onChange={handleChange}
-                value={userData?.diamonds}
-                label="Diamonds"
-                placeholder="Diamnonds"
-              />
-              <Input
-                value={userData?.bio}
-                id="bio"
-                label="Bio"
-                placeholder="Bio"
-              />
-              <Input
-                value={userData?.roomName}
-                onChange={handleChange}
-                id="roomName"
-                label="Room Name"
-                placeholder="Room Name"
-              /> */}
+          <Input
+            id="password"
+            placeholder="Password"
+            label="Password"
+            variant="default"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </div>
       </ModalComponent>
     </>

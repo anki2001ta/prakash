@@ -2,7 +2,7 @@
 import React,{ useEffect, useState,Fragment } from "react";
 import TableComponent from "@/components/ui/table";
 import Image from "next/image";
-import { Menu, Transition } from '@headlessui/react';
+import { Menu, Switch, Transition } from '@headlessui/react';
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import ModalComponent from "@/Components/Modal/Modal";
@@ -14,6 +14,7 @@ interface UserData {
   name: string;
   email: string;
   mobile: string;
+  _id: string;
 } 
 
 const deleteUserHandler = (userId: any) => {
@@ -53,6 +54,8 @@ const renderImageCell = (rowData: UserData) => {
     </div>
   ));
 };
+
+
 
 
 
@@ -136,6 +139,35 @@ const ViewUser = () => {
       setIsLoading(false);
     }
   };
+  const handleActive = async (checked: boolean, id: string) => {
+    console.log("checked", checked);
+    console.log("id", id);
+    try {
+      const response = await fetch(
+        "https://fun2fun.live/admin/user/banUserLive",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            _id: id,
+            is_active_userId: checked,
+          }),
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+  
+      const updatedData = await response.json();
+      (updatedData.data);
+    } catch (error) {
+      console.error("Error toggling user Live ban:", error);
+    }
+  };
+  
 
   const renderActionCell = (index: number,user:any) => {
     return (
@@ -273,7 +305,7 @@ const ViewUser = () => {
             </button>
           )}
         </Menu.Item>
-        <Menu.Item>
+        {/* <Menu.Item>
           {({ active }) => (
             <button
               className={`${
@@ -287,7 +319,7 @@ const ViewUser = () => {
               Delete
             </button>
           )}
-        </Menu.Item>
+        </Menu.Item> */}
         <Menu.Item>
           {({ active }) => (
             <button
@@ -371,6 +403,23 @@ const ViewUser = () => {
       key: "name",
       label: "Username",
     },
+    {
+      key: "is_active_userId",
+      label: "Active/Deactive",
+      renderCell: (rowData: UserData) => (
+        <label className="inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            className="sr-only peer"
+            checked={rowData.is_active_userId}
+            onChange={(event) => handleActive(event.target.checked, rowData?._id)}
+          />
+          <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+        </label>
+      ),
+    
+    },
+    
     {
       key: "userid",
       label: "User Id",

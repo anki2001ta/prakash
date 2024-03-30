@@ -53,14 +53,29 @@ const Sidebar: React.FC = () => {
   const [showAgency, setShowAgencyMenu] = React.useState(false);
   const [showShop, setShowShop] = React.useState(false);
   const [showGift, setShowGift] = React.useState(false);
-  const [showManager, setShowManager]= React.useState(false)
+  const [showManager, setShowManager] = React.useState(false);
   return (
     <aside
       id="sidebar"
       className="Sidebar h-screen w-64 overflow-y-auto overflow-x-hidden bg-black px-6 py-4 pt-8 shadow-sm 2xl:w-72 2xl:pt-10"
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
-      <Link href="/" className="mb-8 flex items-center gap-3 2xl:mb-10">
+    
+
+      <div className="mb-8 flex items-center gap-3 2xl:mb-10">
+      <div onClick={()=>setShowShop(true)}>
+        <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+          <path
+          className="text-white"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-miterlimit="10"
+            stroke-width="2"
+            d="M4 7h22M4 15h22M4 23h22"
+          ></path>
+        </svg>
+      </div>
+      <Link href="/" className="flex items-center gap-3 2xl:mb-10" >
         <Image
           src="/useFun.png"
           alt="usefun"
@@ -71,7 +86,9 @@ const Sidebar: React.FC = () => {
         <h5 className="text-body-xl font-semibold text-white uppercase">
           DASHBOARD
         </h5>
-      </Link>
+      </Link>  
+      </div>
+
 
       <nav className="mt-10 flex w-full flex-col items-start gap-3">
         <SidebarMenu
@@ -119,7 +136,7 @@ const Sidebar: React.FC = () => {
           active={showManager}
           onClick={() => setShowManager(!showManager)}
           icon={<ReceiptIcon />}
-          name="Manager" 
+          name="Manager"
           variant="sub-menu"
         />
 
@@ -206,7 +223,7 @@ const Sidebar: React.FC = () => {
         </SidebarExpand> */}
 
         {/* Shop */}
-{/* 
+        {/* 
         <SidebarMenu
           active={showShop}
           onClick={() => setShowShop(!showShop)}

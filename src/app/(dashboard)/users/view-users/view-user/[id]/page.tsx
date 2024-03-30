@@ -4,13 +4,11 @@ import { PencilSimpleIcon } from "@/assets/icons";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import ButtonLoader from "@/Components/Loaders/buttonLoader";
-import { SyncLoader } from "react-spinners";
 import { Switch } from "@headlessui/react";
 import { useRouter } from "next/navigation";
 
 export default function Page({ params }: { params: { id: string } }) {
   const [data, setData] = useState(null);
-  console.log("data comes like", data?.loginOtp);
   const [isLoading, setIsLoading] = useState(true);
   const fetchData = async () => {
     try {
@@ -61,32 +59,6 @@ export default function Page({ params }: { params: { id: string } }) {
       console.error("Error toggling user Live ban:", error);
     }
   };
-  const handleUserIdActive = async () => {
-    try {
-      const response = await fetch(
-        "https://fun2fun.live/admin/user/user/banUserId",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            _id: params?.id,
-            is_active_live: !data.is_active_userId,
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const updatedData = await response.json();
-      setData(updatedData.data);
-    } catch (error) {
-      console.error("Error toggling user Live ban:", error);
-    }
-  };
 
   const handleRemoveDP = () => {
     // Define the functionality for removing display picture
@@ -110,12 +82,11 @@ export default function Page({ params }: { params: { id: string } }) {
             variant="primary-bg"
           onClick={()=>router.push(`/users/view-users/edit-user/${params?.id}`)}
           >
-            <PencilSimpleIcon className="h-4 w-4 stroke-[4px]" />
             Edit
           </Button>
         </nav>
 
-        <section className="flex flex-row items-center gap-5">
+        <section className="flex flex-col gap-2 lg:flex-row items-center lg:gap-5">
           {isLoading ? (
             <div className="h-full w-full flex justify-center items-center">
               <ButtonLoader />
@@ -135,18 +106,18 @@ export default function Page({ params }: { params: { id: string } }) {
             </div>
           )}
 
-          <div className="space-y-7">
-            <h3 className="text-heading-sm font-semibold text-blue-600">{data?.name}</h3>
+          <div className="space-y-1 lg:space-y-7">
+            <h3 className="text-heading-sm font-semibold text-center xl:text-left text-blue-600">{data?.name}</h3>
 
-            <section className="flex flex-row items-start gap-40">
-              <div className="w-72 space-y-1.5">
+            <section className="flex  flex-col gap-2 xl:flex-row items-start xl:gap-40">
+              <div className="w-72 space-y-1 lg:space-y-1.5">
                 <div className="flex gap-4"></div>
                 <h1 className=" text-netral-50">Bio</h1>
                 <p className="text-[12px]">{data?.bio}</p>
                
               </div>
 
-              <div className="w-72 space-y-1.5">
+              <div className="w-72 space-y-1  lg:space-y-1.5">
                 <h5 className="text-body-sm uppercase text-netral-50">
                   Phone Number
                 </h5>
@@ -157,7 +128,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 )}
               </div>
               <div className="flex flex-col">
-              <h5 className="text-body-sm uppercase text-netral-50">
+              <h5 className="text-body-sm uppercase text-nowrap text-netral-50">
                   Email Address
                 </h5>
                 {!data?.email ? (
@@ -169,113 +140,69 @@ export default function Page({ params }: { params: { id: string } }) {
             </section>
           </div>
         </section>
-        <section className="rounded-lg-10 bg-white p-6 mt-6 ">
-        <div className="w-full  flex gap-2">
+        <div className="mt-8">
+        <div className="border-t border-gray-300"></div>
+
+        </div>
+        <section className="rounded-lg-10 bg-white p-0  lg:p-6 mt-6 ">
+        <div className="w-full flex flex-col  lg:flex-row gap-2">
           <div className="grid grid-cols-2 gap-12">
             <div className="flex flex-col gap-8">
-              <p className="">Device Type</p>
-              <p>Device ID</p>
-              <p>Is Email Verified</p>
-              <p>User Type</p>
-              <p>Login OTP</p>
-              <p className=" mt-2  ">User ID(Ban/Unban)</p>
-              <p className=" mt-2  ">Live Hotlist</p>
-              <p className=" mt-6  ">Live(Ban/Unban)</p>
-              <p className=" mt-4 ">ID (Ban/Unban)</p>
+              <p className="text-sm lg:text-md">Device Type</p>
+              <p className="text-sm lg:text-md">Device ID</p>
+              <p className="text-sm lg:text-md">Is Email Verified</p>
+              <p className="text-sm lg:text-md">User Type</p>
+              <p className="text-sm lg:text-md">Login OTP</p>
+              <p className="text-sm lg:text-md">User(Ban/Unban)</p>
             </div>
             <div className="flex flex-col gap-8 ">
-              <p>{data?.device_type?.length > 0 ? data?.device_type : "NO"}</p>
-              <p>{data?.device_id?.length > 0 ? data?.device_id : "NO"}</p>
-              <p>{data?.status?.length > 0 ? data?.status : "NA"}</p>
-              <p>{data?.user_type?.length > 0 ? data?.user_type : "NO"}</p>
-              <p>{data?.loginOtp}</p>
+              <p className="text-sm lg:text-md">{data?.device_type?.length > 0 ? data?.device_type : "NO"}</p>
+              <p className="text-sm lg:text-md">{data?.device_id?.length > 0 ? data?.device_id : "NO"}</p>
+              <p className="text-sm lg:text-md">{data?.status?.length > 0 ? data?.status : "NA"}</p>
+              <p className="text-sm lg:text-md">{data?.user_type?.length > 0 ? data?.user_type : "NO"}</p>
+              <p className="text-sm lg:text-md">{data?.loginOtp}</p>
               <Switch
-                checked={data?.is_active_userId}
-                onChange={handleUserIdActive}
-                className={`${data?.is_active_userId  ? "bg-[#9ACD31]" : "bg-[#9ACD31]/[0.6]"}
-          relative inline-flex  w-[74px]  shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white/75`}
-              >
-                <span
-                  aria-hidden="true"
-                  className={`${data?.is_active_live  ? "translate-x-9" : "translate-x-0"}
-            pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
-                />
-              </Switch>
-              <Switch
-                checked={data ? data?.is_active_live : false}
+                checked={data?.is_active_live}
                 onChange={handleBanLive}
-                className={`${data?.is_active_live ? "bg-[#9ACD31]" : "bg-[#9ACD31]/[0.6]"}
-          relative inline-flex h-[38px] w-[74px]  shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white/75`}
+                className={`${data?.is_active_live  ? "bg-[#9ACD31]" : "bg-gray-400"}
+          relative inline-flex  w-[50px]  shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white/75`}
               >
-                <span className="sr-only">Use setting</span>
                 <span
                   aria-hidden="true"
-                  className={`${data?.is_active_live  ? "translate-x-9" : "translate-x-0"}
-            pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
-                />
-              </Switch>
-              <Switch
-                checked={data ? data?.is_active_live : false}
-                onChange={handleBanLive}
-                className={`${data?.is_active_live ? "bg-[#9ACD31]" : "bg-[#9ACD31]/[0.6]"}
-          relative inline-flex h-[38px] w-[74px]  shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white/75`}
-              >
-                <span className="sr-only">Use setting</span>
-                <span
-                  aria-hidden="true"
-                  className={`${data?.is_active_live  ? "translate-x-9" : "translate-x-0"}
-            pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
-                />
-              </Switch>
-              <Switch
-                checked={data ? data?.is_active_live : false}
-                onChange={handleBanLive}
-                className={`${data?.is_active_live ? "bg-[#9ACD31]" : "bg-[#9ACD31]/[0.6]"}
-          relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white/75`}
-              >
-                <span className="sr-only">Use setting</span>
-                <span
-                  aria-hidden="true"
-                  className={`${data?.is_active_live  ? "translate-x-9" : "translate-x-0"}
-            pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
+                  className={`${data?.is_active_live  ? "translate-x-6" : "translate-x-0"}
+            pointer-events-none inline-block h-[20px] w-[20px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
                 />
               </Switch>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-12">
             <div className="flex flex-col gap-8">
-              <p className="">No of Followers</p>
-              <p>Number of Following</p>
-              <p>No of likes</p>
-              <p>No of comment</p>
-              <p>No of views</p>
-              <p>No of Block User</p>
-              <p>No of Account</p>
-              <p className="   mt-2">Device</p>
+              <p className="text-sm lg:text-md"> Followers</p>
+              <p className="text-sm lg:text-md">Following</p>
+              <p className="text-sm lg:text-md"> likes</p>
+              <p className="text-sm lg:text-md"> comment</p>
+              <p className="text-sm lg:text-md"> views</p>
+              <p className="text-sm lg:text-md"> Block User</p>
+              {/* <p className="   mt-2">Device</p> */}
              
             </div>
             <div className="flex flex-col gap-8">
-         <p>{data?.followers?.[0]   }</p>
-         <p>{data?.following?.[0]   }</p>
-              <p>{ data?.likes}</p>
-              <p>{data?.comments}</p>
-              <p>{data?.views}</p>
-              <p>{data?.block_users}</p>
-              <p>{data?.accounts}</p>
-              <Switch
-                checked={data ? data?.is_active_live : false}
-                onChange={handleBanLive}
-                className={`${data?.is_active_live ? "bg-[#9ACD31]" : "bg-[#9ACD31]/[0.6]"}
-          relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white/75`}
-              >
-                <span className="sr-only">Use setting</span>
-                <span
-                  aria-hidden="true"
-                  className={`${data?.is_active_live  ? "translate-x-9" : "translate-x-0"}
-            pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
-                />
-              </Switch>
+         <p className="text-sm lg:text-md">{data?.followers?.length   }</p>
+         <p className="text-sm lg:text-md">{data?.following?.length   }</p>
+              <p className="text-sm lg:text-md">{ data?.likes}</p>
+              <p className="text-sm lg:text-md">{data?.comments}</p>
+              <p className="text-sm lg:text-md">{data?.views}</p>
+              <p className="text-sm lg:text-md">{data?.block_users}</p>
   
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-12">
+            <div className="flex flex-col gap-8">
+              <p className="text-sm lg:text-md"> Account</p>
+             
+            </div>
+            <div className="flex flex-col gap-8">
+              <p className="text-sm lg:text-md">{data?.accounts}</p> 
             </div>
           </div>
         </div>
