@@ -8,6 +8,7 @@ import ModalComponent from "@/Components/Modal/Modal";
 import { Menu, Transition } from "@headlessui/react";
 import { Input } from "@/Components/atomics";
 import { Delete, Edit } from "@mui/icons-material";
+import EditManager from "@/Components/EditManager";
 
 interface UserData {
   userId: string;
@@ -154,6 +155,46 @@ const ViewUser = () => {
     }
   };
 
+  const handleActive = async (checked: boolean, id: string) => {
+    try {
+      const response = await fetch("https://fun2fun.live/admin/manager/ban", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: id,
+          is_active: checked,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+  
+      const updatedData = await response.json();
+  
+      // Find the index of the user in the existing userData array
+      const index = userData.findIndex((user: any) => user.userId === updatedData.data.userId);
+  
+      if (index !== -1) {
+        setUserData((prevUserData: any) => {
+          const newData = [...prevUserData];
+          newData[index] = {
+            ...newData[index], // Keep existing properties
+            is_active: updatedData?.data?.is_active, // Update is_active
+            status: updatedData?.data?.is_active ? "Active" : "Inactive", // Update status
+          };
+          return newData;
+        });
+      } else {
+        console.error(`User with userId ${updatedData.data.userId} not found in userData array.`);
+      }
+    } catch (error) {
+      console.error("Error toggling user ban status:", error);
+    }
+  };
+  
 
   const headerData = [
     {
@@ -170,6 +211,22 @@ const ViewUser = () => {
     },
     {
       key: "is_active",
+      label: "Ban/Uban",
+      renderCell: (rowData: UserData) => (
+        <label className="inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            className="sr-only peer"
+            checked={rowData?.is_active}
+            onChange={(event) => handleActive(event.target.checked, rowData?.userId)}
+          />
+          <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-netral-25 dark:peer-focus:ring-netral-25 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-netral-25"></div>
+        </label>
+      ),
+    
+    },
+    {
+      key: "status",
       label: "Status",
       renderCell: (rowData: UserData) => (
         <span
@@ -180,20 +237,7 @@ const ViewUser = () => {
           {rowData?.is_active ? "Active" : "Inactive"}
         </span>
       ),
-    },
-    {
-      key: "action",
-      label: "Action",
-      renderCell: (rowData:any) =>(
-        <div className="flex gap-2">
-          <div className="cursor-pointer" onClick={()=>handleEditItem(rowData)}><Edit/></div>
-          <div className="cursor-pointer" onClick={()=>{
-            setIsOpenDeleteModal(true)
-            setManagerId(rowData.userId);
-          }}><Delete/></div>
-        </div>
-      ),
-    },
+    }
   ];
 
   const handleOnAdd = () => {
@@ -234,6 +278,21 @@ const ViewUser = () => {
       setOpenAddManagerModal(false); // Close the modal regardless of success or failure
     }
   };
+  
+
+  const handleSearch = (searchTerm: string) => {
+    if (!searchTerm.trim()) {
+      // If the search term is empty or whitespace, fetch the data again to reset the table
+      fetchData();
+    } else {
+      const filteredData = userData.filter((user: any) =>
+        user?.username.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setUserData(filteredData); // Update userData state with filtered results
+    }
+  };
+  
+
 
   return (
     <>
@@ -243,6 +302,7 @@ const ViewUser = () => {
         data={userData}
         isAdd={true}
         headers={headerData}
+        handleSearch={handleSearch}
         title="View Managers"
       />
       <ModalComponent
@@ -294,38 +354,12 @@ const ViewUser = () => {
         </div>
       </ModalComponent>
       <ModalComponent
-        onAction={handleDeleteManager}
-        isOpen={openAddManagerModal}
-        setIsOpen={setOpenAddManagerModal}
+        onAction={()=>{}}
+        isOpen={openEditManagerModal}
+        setIsOpen={setOpenEditManagerModal}
         size="2xl"
       >
-        <div className="px-8 py-4 grid grid-cols-1 gap-x-5 gap-y-8">
-          <Input
-            id="username"
-            placeholder="Enter User Name"
-            label="User Name"
-            variant="default"
-            value={username}
-            onChange={(e) => setUserName(e.target.value)}
-          />
-
-          <Input
-            id="userid"
-            placeholder="Enter User Id"
-            label="Enter User Id"
-            variant="default"
-            value={userid}
-            onChange={(e) => setUserId(e.target.value)}
-          />
-          <Input
-            id="password"
-            placeholder="Password"
-            label="Password"
-            variant="default"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+<EditManager/>
       </ModalComponent>
     </>
   );

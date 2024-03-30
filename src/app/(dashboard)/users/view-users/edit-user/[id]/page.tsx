@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { Alerts, Button, Input, Title } from "@/components/atomics";
 import { PencilSimpleIcon } from "@/assets/icons";
 
-const Viewuser = ({ params }: { params: { id: string } }) => {
+const Page = ({ params }: { params: { id: string } }) => {
   console.log("parmas id is", params);
   // @ts-ignore
   const [data, setData] = useState(null);
@@ -721,4 +721,4 @@ const Viewuser = ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default Viewuser;
+export default Page;

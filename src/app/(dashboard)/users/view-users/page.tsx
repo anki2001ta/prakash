@@ -6,6 +6,7 @@ import { Menu, Switch, Transition } from '@headlessui/react';
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import ModalComponent from "@/Components/Modal/Modal";
+import { Alerts } from "@/Components/atomics";
 
 interface UserData {
   userId: string;
@@ -110,6 +111,7 @@ const ViewUser = () => {
   const [isLoading,setIsLoading] = useState<boolean>(false);
   const router = useRouter();
   const [openDeleteModal, setIsOpenDeleteModal]=useState<boolean>(false);
+  const [openAlertsSuccess, setOpenAlertsSuccess] = useState(false);
   const handleDeleteModal=(id:string)=> {
     setIsOpenDeleteModal(true)
   }
@@ -140,29 +142,41 @@ const ViewUser = () => {
     }
   };
   const handleActive = async (checked: boolean, id: string) => {
-    console.log("checked", checked);
-    console.log("id", id);
     try {
-      const response = await fetch(
-        "https://fun2fun.live/admin/user/banUserLive",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            _id: id,
-            is_active_userId: checked,
-          }),
-        }
-      );
+      const response = await fetch("https://fun2fun.live/admin/user/banUserId", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: id,
+          is_active_userId: checked,
+        }),
+      });
   
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
   
       const updatedData = await response.json();
-      (updatedData.data);
+  
+      // Find the index of the user in the existing userData array
+      const index = userData.findIndex((user: any) => user._id === updatedData?.data?._id);
+  
+      if (index !== -1) {
+        // Update the user data at the found index with the updated user data
+        setUserData((prevUserData: any) => {
+          const newData = [...prevUserData];
+          newData[index] = {
+            ...newData[index], // Keep existing properties
+            is_active_userId: updatedData?.data?.is_active_userId, // Update is_active
+            status: updatedData?.data?.is_active_userId ? "Active" : "Inactive", // Update status
+          };
+          return newData;
+        });
+      } else {
+        console.error(`User with _id ${updatedData?.data?._id} not found in userData array.`);
+      }
     } catch (error) {
       console.error("Error toggling user Live ban:", error);
     }
@@ -412,9 +426,9 @@ const ViewUser = () => {
             type="checkbox"
             className="sr-only peer"
             checked={rowData.is_active_userId}
-            onChange={(event) => handleActive(event.target.checked, rowData?._id)}
+            onChange={(event) => handleActive(event.target.checked, rowData?.userId)}
           />
-          <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+          <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-netral-25 dark:peer-focus:ring-netral-25 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-netral-25"></div>
         </label>
       ),
     
@@ -448,8 +462,23 @@ const ViewUser = () => {
     }
   ];
 
-  return (<>
-    <TableComponent isLoading={isLoading} data={userData} headers={headerData} title="View Users" />
+  const handleSearch = (searchTerm: string) => {
+    if (!searchTerm.trim()) {
+      // If the search term is empty or whitespace, fetch the data again to reset the table
+      fetchData();
+    } else {
+      const filteredData = userData?.filter((user: any) =>
+        user?.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setUserData(filteredData); // Update userData state with filtered results
+    }
+  }
+
+  return (
+  <>
+    <TableComponent 
+    // handleSearch={handleSearch}  
+    isLoading={isLoading} data={userData} headers={headerData} title="View Users" />
     <ModalComponent
         onAction={()=>{}}
         isOpen={openDeleteModal}
@@ -464,6 +493,13 @@ const ViewUser = () => {
           </div>
         </div>
       </ModalComponent>
+      <Alerts
+        variant='success'
+        open={openAlertsSuccess}
+        setOpen={setOpenAlertsSuccess}  
+        title='Edit'
+        desc='Data is Edited Successfully!'
+      />
     </>
   );
 };

@@ -36,14 +36,14 @@ export default function Page({ params }: { params: { id: string } }) {
   const handleBanLive = async () => {
     try {
       const response = await fetch(
-        "https://fun2fun.live/admin/user/banUserLive",
+        "https://fun2fun.live/admin/user/banUserId",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            _id: params?.id,
+            userId: params?.id,
             is_active_live: !data.is_active_live,
           }),
         }
@@ -69,6 +69,9 @@ export default function Page({ params }: { params: { id: string } }) {
   useEffect(() => {
     fetchData();
   }, []);
+
+
+  
   return (
     <div>
       <section className="relative rounded-lg-10 bg-white p-6">
