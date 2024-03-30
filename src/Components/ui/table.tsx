@@ -71,8 +71,8 @@ const TableComponent: React.FC<TableProps> = ({
 
   return (
     <>
-      <div className="relative p-6 space-y-6">
-        <section className="relativ min-h-screen p-6 bg-white rounded-lg">
+      <div className="relative  p-6 space-y-6">
+        <section className="relative min-h-screen p-6 bg-white rounded-lg">
           <nav className="flex items-center justify-between mb-8">
             <Title size="sm" variant="default" className="text-netral-25">
               {title}
