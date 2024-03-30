@@ -136,21 +136,14 @@ export default function Page({ params }: { params: { id: string } }) {
           )}
 
           <div className="space-y-7">
-            <h3 className="text-heading-sm font-semibold">Samanta Legend</h3>
+            <h3 className="text-heading-sm font-semibold text-blue-600">{data?.name}</h3>
 
-            <section className="flex flex-row items-start gap-2.5">
+            <section className="flex flex-row items-start gap-40">
               <div className="w-72 space-y-1.5">
                 <div className="flex gap-4"></div>
-                <h1>Bio</h1>
-                <p>{data?.bio}</p>
-                <h5 className="text-body-sm uppercase text-netral-50">
-                  Email Address
-                </h5>
-                {!data?.email ? (
-                  <p>No Email</p>
-                ) : (
-                  <p className="text-body-base font-medium">{data?.email}</p>
-                )}
+                <h1 className=" text-netral-50">Bio</h1>
+                <p className="text-[12px]">{data?.bio}</p>
+               
               </div>
 
               <div className="w-72 space-y-1.5">
@@ -163,6 +156,16 @@ export default function Page({ params }: { params: { id: string } }) {
                   <p className="text-body-base font-medium">{data?.mobile}</p>
                 )}
               </div>
+              <div className="flex flex-col">
+              <h5 className="text-body-sm uppercase text-netral-50">
+                  Email Address
+                </h5>
+                {!data?.email ? (
+                  <p>No Email</p>
+                ) : (
+                  <p className="text-body-base font-medium">{data?.email}</p>
+                )}
+                </div>
             </section>
           </div>
         </section>

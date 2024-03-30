@@ -412,9 +412,9 @@ const ViewUser = () => {
         },
         body: JSON.stringify({
           username: username,
-          userid: userid,
+          userId: userid,
           password: password,
-          countrycode: country,
+          // countrycode: country,
         }),
       });
       if (response.ok) {
