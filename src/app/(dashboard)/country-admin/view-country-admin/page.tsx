@@ -106,36 +106,77 @@ const ViewUser = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
   const [openDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
-  const [openAddManagerModal, setOpenAddManagerModal] =
+  const [openAddCountryAdminModal, setOpenAddCountryAdminModal] =
     useState<boolean>(false);
-  const [openEditManagerModal, setOpenEditManagerModal] =useState<boolean>(false);
+  const [openEditManagerModal, setOpenEditManagerModal] =
+    useState<boolean>(false);
   const [username, setUserName] = useState<string>("");
   const [userid, setUserId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [manager, setManager] = useState<string>(() => {
+    const storedManager = localStorage.getItem("username");
+    return storedManager !== null ? storedManager : "";
+  });
   const [country, setCountry] = useState<string>("");
   const [managerId, setManagerId] = useState<string>("");
+  const [isModalLoading, setIsModalLoading] = useState<boolean>(false)
   const handleDeleteModal = (id: string) => {
     setIsOpenDeleteModal(true);
+    setUserId(id)
   };
   useEffect(() => {
     fetchData();
   }, []);
 
+  const handleEditItem = (data: any) => {
+    console.log("data is", data);
+  };
 
-  const handleEditItem=(data:any)=>{
-    console.log("data is",data)
+  const [editForm, setEditForm]= useState<any>({
+
+  })
+
+  // useEffect(()=>{
+
+  // },[])
+const handleDeleteAdmin =async()=> {
+    try {
+      setIsModalLoading(true)
+      const url = `https://fun2fun.live/admin/remove/country-admin`;
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // Pass userId in the body
+        body: JSON.stringify({ userId: userid }),
+      });
   
-  }
-
-
-  const handleDeleteManager=()=> {
-    console.log("amager id", managerId)
-  }
+      if (response.ok) {
+        console.log("User deleted successfully");
+        toast.success("Data deleted");
+        setIsOpenDeleteModal(false)
+        setIsModalLoading(false)
+        // Refetch data after deletion
+        fetchData();
+      } else {
+        console.log("Error deleting user");
+        toast.error("Error while deleting data");
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      toast.error("Error while deleting data");
+      setIsModalLoading(false)
+    }
+  
+}
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`https://fun2fun.live/admin/manager/getall`);
+      const response = await fetch(
+        `https://fun2fun.live/admin/country-admin/getall`
+      );
       const data = await response?.json();
       console.log("data is", data);
       const modifiedData = data?.data?.map((user: UserData, index: number) => ({
@@ -167,16 +208,18 @@ const ViewUser = () => {
           is_active: checked,
         }),
       });
-  
+
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-  
+
       const updatedData = await response.json();
-  
+
       // Find the index of the user in the existing userData array
-      const index = userData.findIndex((user: any) => user.userId === updatedData.data.userId);
-  
+      const index = userData.findIndex(
+        (user: any) => user.userId === updatedData.data.userId
+      );
+
       if (index !== -1) {
         setUserData((prevUserData: any) => {
           const newData = [...prevUserData];
@@ -188,13 +231,14 @@ const ViewUser = () => {
           return newData;
         });
       } else {
-        console.error(`User with userId ${updatedData.data.userId} not found in userData array.`);
+        console.error(
+          `User with userId ${updatedData.data.userId} not found in userData array.`
+        );
       }
     } catch (error) {
       console.error("Error toggling user ban status:", error);
     }
   };
-  
 
   const headerData = [
     {
@@ -210,59 +254,67 @@ const ViewUser = () => {
       label: "UserName",
     },
     {
-      key: "is_active",
-      label: "Ban/Uban",
-      renderCell: (rowData: UserData) => (
-        <label className="inline-flex items-center cursor-pointer">
-          <input
-            type="checkbox"
-            className="sr-only peer"
-            checked={rowData?.is_active}
-            onChange={(event) => handleActive(event.target.checked, rowData?.userId)}
-          />
-          <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-netral-25 dark:peer-focus:ring-netral-25 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-netral-25"></div>
-        </label>
-      ),
-    
+      key: "countryCode",
+      label: "Country Code",
     },
+
+
+
     {
       key: "status",
       label: "Status",
       renderCell: (rowData: UserData) => (
-        <span
-          className={`${
-            rowData?.is_active ? "text-green-500" : "text-red-500"
-          }`}
-        >
-          {rowData?.is_active ? "Active" : "Inactive"}
+        <span className={`${rowData?.is_active ? "text-green-500" : "text-red-500"}`}>
+          {rowData?.is_active ? "Active":"InActive"}
         </span>
       ),
-    }
+    },
+    {
+      key: "is_active",
+      label: "Action",
+      renderCell: (rowData: UserData) => (
+        <div className="flex gap-2">
+          {/* <div onClick={() => setOpenEditManagerModal(true)} >
+            <Edit className="cursor-pointer  text-gray-600" />
+          </div> */}
+          <div onClick={()=>handleDeleteModal(rowData?.userId)}>
+            <Delete className="cursor-pointer text-red-600" />
+          </div>
+        </div>
+      ),
+    },
+    
   ];
 
   const handleOnAdd = () => {
-    setOpenAddManagerModal(true);
+    setOpenAddCountryAdminModal(true);
   };
 
-  const handleAddManager = async () => {
+  const handleAddCountryModal = async () => {
     try {
-      const response = await fetch(`https://fun2fun.live/admin/make/manager`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: username,
-          userId: userid,
-          password: password,
-          // countrycode: country,
-        }),
-      });
+      setIsModalLoading(true);
+      const response = await fetch(
+        `https://fun2fun.live/admin/make/country-admin`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: username,
+            userId: userid,
+            password: password,
+            countryCode: country,
+            createdBy: manager,
+          }),
+        }
+      );
       if (response.ok) {
         // Request was successful
         const data = await response.json();
-        console.log("Manager added successfully:", data);
+        console.log("Country added successfully:", data);
         fetchData();
+        setIsModalLoading(false)
         // Optionally, perform any actions after successful addition
       } else {
         // Request failed
@@ -273,20 +325,12 @@ const ViewUser = () => {
       // Network error or other error occurred
       console.error("Error adding manager:", error);
       // Optionally, handle error scenario
+      setIsModalLoading(false)
     } finally {
       fetchData();
-      setOpenAddManagerModal(false); // Close the modal regardless of success or failure
+      setOpenAddCountryAdminModal(false); // Close the modal regardless of success or failure
     }
   };
-  
-
-  const handleSearch = (searchTerm: string) => {
-    const filteredData = userData.filter((user: any) =>
-      user?.username.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setUserData(filteredData); // Update userData state with filtered results
-  };
-
 
   return (
     <>
@@ -294,16 +338,18 @@ const ViewUser = () => {
         onAdd={handleOnAdd}
         isLoading={isLoading}
         data={userData}
-        isAdd={true}
         headers={headerData}
-        title="View Managers"
-        addButtonLabel="Add Manager"
+        addButtonLabel="Add Country Admin"
+        isAdd
+        title="View Country Admins"
       />
       <ModalComponent
-        onAction={() => {}}
+        onAction={handleDeleteAdmin}
         isOpen={openDeleteModal}
         setIsOpen={setIsOpenDeleteModal}
         size="2xl"
+        actionLabel="Delete"
+        loading={isModalLoading}
       >
         <div>
           <div className="p-12 flex justify-center w-full  text-white text-[20px]">
@@ -314,9 +360,10 @@ const ViewUser = () => {
         </div>
       </ModalComponent>
       <ModalComponent
-        onAction={handleAddManager}
-        isOpen={openAddManagerModal}
-        setIsOpen={setOpenAddManagerModal}
+       loading={isModalLoading}
+        onAction={handleAddCountryModal}
+        isOpen={openAddCountryAdminModal}
+        setIsOpen={setOpenAddCountryAdminModal}
         size="2xl"
       >
         <div className="px-8 py-4 grid grid-cols-1 gap-x-5 gap-y-8">
@@ -331,15 +378,32 @@ const ViewUser = () => {
 
           <Input
             id="userid"
-            placeholder="Enter email address"
+            placeholder="Enter User Id"
             label="Enter User Id"
             variant="default"
             value={userid}
             onChange={(e) => setUserId(e.target.value)}
           />
           <Input
+            id="country"
+            placeholder="Country Code"
+            label="Country"
+            variant="default"
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+          />
+          <Input
+            id="manager"
+            placeholder=""
+            label="Created By"
+            variant="default"
+            value={manager}
+            disabled
+            onChange={(e) => setManager(e.target.value)}
+          />
+          <Input
             id="password"
-            placeholder="Password"
+            placeholder=""
             label="Password"
             variant="default"
             value={password}
@@ -348,13 +412,20 @@ const ViewUser = () => {
         </div>
       </ModalComponent>
       <ModalComponent
-      
-        onAction={()=>{}}
+        loading={isModalLoading}
+        onAction={() => {}}
         isOpen={openEditManagerModal}
         setIsOpen={setOpenEditManagerModal}
         size="2xl"
       >
-<EditManager/>
+        {/* <div>
+          <div className="p-12 flex justify-center w-full  text-white text-[20px]">
+            <p className="text-white text-[20px]">
+              Are You Sure You Want to Delete?
+            </p>
+          </div>
+        </div> */}
+        <div>Edit Modal</div>
       </ModalComponent>
     </>
   );

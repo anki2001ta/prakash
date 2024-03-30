@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Transition } from "@headlessui/react";
 
@@ -19,6 +19,7 @@ import {
 import { SidebarMenu } from "@/components/moleculs";
 import { NijaLogo } from "@/assets/brands";
 import Image from "next/image";
+import { Flag } from "@mui/icons-material";
 
 const SidebarExpand: React.FC<{
   children?: React.ReactNode;
@@ -54,41 +55,49 @@ const Sidebar: React.FC = () => {
   const [showShop, setShowShop] = React.useState(false);
   const [showGift, setShowGift] = React.useState(false);
   const [showManager, setShowManager] = React.useState(false);
+  const [showCountryAdmin, setShowCountryAdmin] = React.useState(false);
+
+  const [role, setRole] = useState<string>("");
+
+  useEffect(() => {
+    const value = localStorage.getItem("role");
+    if (value !== null) {
+      setRole(value);
+    }
+  }, []);
+
   return (
     <aside
       id="sidebar"
       className="Sidebar h-screen w-64 overflow-y-auto overflow-x-hidden bg-black px-6 py-4 pt-8 shadow-sm 2xl:w-72 2xl:pt-10"
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
-    
-
       <div className="mb-8 flex items-center gap-3 2xl:mb-10">
-      <div onClick={()=>setShowShop(true)}>
-        <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
-          <path
-          className="text-white"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-miterlimit="10"
-            stroke-width="2"
-            d="M4 7h22M4 15h22M4 23h22"
-          ></path>
-        </svg>
+        <div onClick={() => setShowShop(true)}>
+          <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+            <path
+              className="text-white"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-miterlimit="10"
+              stroke-width="2"
+              d="M4 7h22M4 15h22M4 23h22"
+            ></path>
+          </svg>
+        </div>
+        <Link href="/" className="flex items-center gap-3 2xl:mb-10">
+          <Image
+            src="/useFun.png"
+            alt="usefun"
+            width={600}
+            height={600}
+            className="h-7 w-7 2xl:h-8 2xl:w-8"
+          />
+          <h5 className="text-body-xl font-semibold text-white uppercase">
+            DASHBOARD
+          </h5>
+        </Link>
       </div>
-      <Link href="/" className="flex items-center gap-3 2xl:mb-10" >
-        <Image
-          src="/useFun.png"
-          alt="usefun"
-          width={600}
-          height={600}
-          className="h-7 w-7 2xl:h-8 2xl:w-8"
-        />
-        <h5 className="text-body-xl font-semibold text-white uppercase">
-          DASHBOARD
-        </h5>
-      </Link>  
-      </div>
-
 
       <nav className="mt-10 flex w-full flex-col items-start gap-3">
         <SidebarMenu
@@ -99,13 +108,15 @@ const Sidebar: React.FC = () => {
           exact
         />
         {/* Users */}
-        <SidebarMenu
-          active={showUsersMenu}
-          onClick={() => setShowUsersMenu(!showUsersMenu)}
-          icon={<UsersIcon />}
-          name="Users"
-          variant="sub-menu"
-        />
+        {role !== "Manager" && (
+          <SidebarMenu
+            active={showUsersMenu}
+            onClick={() => setShowUsersMenu(!showUsersMenu)}
+            icon={<UsersIcon />}
+            name="Users"
+            variant="sub-menu"
+          />
+        )}
 
         <SidebarExpand show={showUsersMenu}>
           <SidebarMenu
@@ -132,19 +143,37 @@ const Sidebar: React.FC = () => {
             href="/users/push-notifications"
           />
         </SidebarExpand>
-        <SidebarMenu
-          active={showManager}
-          onClick={() => setShowManager(!showManager)}
-          icon={<ReceiptIcon />}
-          name="Manager"
-          variant="sub-menu"
-        />
+        {role !== "Manager" && (
+          <SidebarMenu
+            active={showManager}
+            onClick={() => setShowManager(!showManager)}
+            icon={<ReceiptIcon />}
+            name="Manager"
+            variant="sub-menu"
+          />
+        )}
 
         <SidebarExpand show={showManager}>
           <SidebarMenu
             name="View Manager"
             variant="expand"
             href="/manager/view-manager"
+          />
+        </SidebarExpand>
+
+        <SidebarMenu
+          active={showCountryAdmin}
+          onClick={() => setShowCountryAdmin(!showCountryAdmin)}
+          icon={<Flag />}
+          name="Country Admin"
+          variant="sub-menu"
+        />
+
+        <SidebarExpand show={showCountryAdmin}>
+          <SidebarMenu
+            name="View Country Admin"
+            variant="expand"
+            href="/country-admin/view-country-admin"
           />
         </SidebarExpand>
 

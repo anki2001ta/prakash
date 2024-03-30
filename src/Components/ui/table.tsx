@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Title } from "@/components/atomics";
 import { PencilSimpleIcon, PlusIcon, SortAscendingIcon } from "@/assets/icons";
 import ButtonLoader from "../Loaders/buttonLoader";
@@ -12,7 +12,7 @@ interface TableProps {
   isLoading?: boolean;
   isAdd?: boolean;
   onAdd?:()=>void;
-  handleSearch?: (term: string) => void;
+  addButtonLabel?:string;
 }
 
 interface Header {
@@ -28,7 +28,7 @@ const TableComponent: React.FC<TableProps> = ({
   isLoading,
   isAdd = false,
   onAdd,
-  handleSearch
+  addButtonLabel
 }) => {
   const convertToCSV = () => {
     if (!data) return;
@@ -59,20 +59,10 @@ const TableComponent: React.FC<TableProps> = ({
     return rowData[header.key];
   };
 
-  const [searchTerm, setSearchTerm] = useState<string>("");
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target as any;
-    setSearchTerm(value);
-    if(handleSearch)   handleSearch(value); 
-  // Pass the search term to the parent component
-  };
-
-
   return (
     <>
-      <div className="relative  p-6 space-y-6">
-        <section className="relative min-h-screen p-6 bg-white rounded-lg">
+      <div className="relative p-6 space-y-6">
+        <section className="relativ min-h-screen p-6 bg-white rounded-lg">
           <nav className="flex items-center justify-between mb-8">
             <Title size="sm" variant="default" className="text-netral-25">
               {title}
@@ -84,7 +74,7 @@ const TableComponent: React.FC<TableProps> = ({
               </Button>
               {isAdd && (
                 <Button size="sm" variant="default-bg"  className="bg-netral-25" onClick={onAdd}>
-                  Add Manager
+                  {addButtonLabel}
                   <PlusIcon className="w-4 h-4 stroke-2" />
                 </Button>
               )}
@@ -93,10 +83,9 @@ const TableComponent: React.FC<TableProps> = ({
           <div className="flex justify-end mb-6">
             <input
               type="text"
+              autoComplete="email"
               required
               placeholder="Search Here"
-              onChange={handleInputChange}
-              value={searchTerm}
               className="w-72 px-4 py-2 rounded-md border border-gray-300 shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-netral-25 sm:text-sm"
             />
           </div>
@@ -134,10 +123,11 @@ const TableComponent: React.FC<TableProps> = ({
                   data?.map((item, rowIndex) => (
                     <tr key={rowIndex}>
                       {headers.map((header) => (
-                     <td key={header.key} className="px-4 py-4 w-[100px] text-clip overflow-hidden ">
-                     {header.renderCell ? renderCell(item, header) : item[header.key]}
-                   </td>
-                   
+                        <td key={header.key} className="px-4 py-4 ">
+                          {header.renderCell
+                            ? renderCell(item, header)
+                            : item[header.key]}
+                        </td>
                       ))}
                     </tr>
                   ))

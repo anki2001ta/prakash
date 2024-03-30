@@ -1,6 +1,6 @@
 'use client'
 import ButtonLoader from "@/Components/Loaders/buttonLoader";
-import { Badge } from "@/Components/atomics";
+import { Badge, Title } from "@/Components/atomics";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -33,6 +33,13 @@ export default function Page({ params }: { params: { id: string } }) {
 
     return (
         <>
+          <section className="relative rounded-lg-10 bg-white p-6">
+        <nav className="mb-8 flex items-center justify-between">
+          <Title size="lg" variant="default">
+            Send Gifts
+          </Title>
+        </nav>
+      </section>
             {isLoading ? (
             <div className="h-screen w-full flex justify-center items-center">
                   <ButtonLoader/>
