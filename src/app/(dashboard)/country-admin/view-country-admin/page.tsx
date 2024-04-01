@@ -96,6 +96,10 @@ const ViewUser = () => {
     const storedManager = localStorage.getItem("username");
     return storedManager !== null ? storedManager : "";
   });
+  const [role, setRole] = useState<string>(() => {
+    const storedRole = localStorage.getItem("role");
+    return storedRole !== null ? storedRole : "";
+  });
   const [country, setCountry] = useState<string>("");
   const [managerId, setManagerId] = useState<string>("");
   const [isModalLoading, setIsModalLoading] = useState<boolean>(false)
@@ -118,6 +122,7 @@ const ViewUser = () => {
   // useEffect(()=>{
 
   // },[])
+  console.log(role,"role...................1")
 const handleDeleteAdmin =async()=> {
     try {
       setIsModalLoading(true)
@@ -284,7 +289,10 @@ const handleDeleteAdmin =async()=> {
             userId: userid,
             password: password,
             countryCode: country,
-            createdBy: manager,
+            createdBy: {
+              userId : manager ,
+              role : manager
+            }
           }),
         }
       );
