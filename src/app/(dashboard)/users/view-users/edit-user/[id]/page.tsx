@@ -51,8 +51,8 @@ const Page = ({ params }: { params: { id: string } }) => {
   const [selectedwallpaper, setSelectedwallpaper] = useState<any>([]);
   const [openAlertsSuccess, setOpenAlertsSuccess] = useState<boolean>(false)
 
-  const [previousIsActive, setPreviousIsActive] = useState(false);
-  const [liveBanData, setLiveBanData] = useState(false);
+  // const [previousIsActive, setPreviousIsActive] = useState<any>(false);
+  // const [liveBanData, setLiveBanData] = useState<any>(false);
 
   const fetchBadges = async () => {
     try {
@@ -237,12 +237,12 @@ const Page = ({ params }: { params: { id: string } }) => {
     fetchSubAdmin();
   }, []);
 
-  useEffect(() => {
-    if (data) {
-      setPreviousIsActive(data?.is_active_userId);
-      setLiveBanData(data?.is_active_live);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) {
+  //     setPreviousIsActive(data?.is_active_userId);
+  //     setLiveBanData(data?.is_active_live);
+  //   }
+  // }, [data]);
 
   const fetchSubAdmin = async () => {
     try {
@@ -260,6 +260,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     }
   };
   console.log("user data", userData);
+
 
   const fetchData = async () => {
     try {
@@ -305,7 +306,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     return data;
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = (event: any) => {
     const file = event.target.files[0];
     if (!file) return;
 
@@ -414,9 +415,9 @@ const Page = ({ params }: { params: { id: string } }) => {
               {/* Display user images */}
               <div className="relative">
                 {userData.images.map((image: string, index: number) => (
-                  <div key={index} className="relative inline-block mr-2">
+                  <div key={index} className="relative inline-block mr-2 mt-4 md:mt-0">
                     <img
-                      className="h-56 w-56 rounded-[50%] object-contain"
+                      className="h-24 w-24 md:h-56 md:w-56 rounded-[50%] object-contain"
                       src={image}
                       alt="User Avatar"
                     />
@@ -447,7 +448,7 @@ const Page = ({ params }: { params: { id: string } }) => {
               </div>
             </div>
 
-            <form className="grid grid-cols-2 gap-x-5 gap-y-8">
+            <form className="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-8">
               <Input
                 id="name"
                 placeholder="Enter name"
@@ -466,7 +467,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                 onChange={handleChange}
               />
               <Input
-                id="phoneNumber"
+                id="mobile"
                 placeholder="Phone Number"
                 label="Phone Number"
                 variant="default"
@@ -487,6 +488,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                 variant="default"
                 placeholder="Beans"
                 value={userData?.beans}
+                onChange={handleChange}
               />
               <Input
                 id="diamonds"
@@ -510,7 +512,7 @@ const Page = ({ params }: { params: { id: string } }) => {
               />
             </form>
           </section>
-          <div className="grid grid-cols-2 gap-x-5 gap-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-2  gap-x-1 md:gap-x-5 gap-y-4 md:gap-y-8 space-y-2 md:space-y-6 rounded-lg-10 bg-white p-6">
             <div className="flex flex-col py-2 gap-2 mt-2">
               <label>Tags</label>
               <Select
@@ -659,7 +661,7 @@ const Page = ({ params }: { params: { id: string } }) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-x-5 gap-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-2  gap-x-1 md:gap-x-5 gap-y-4 md:gap-y-8 space-y-2 md:space-y-6 rounded-lg-10 bg-white p-6">
           <div className="flex flex-col gap-2 py-2 mt-4">
             <label htmlFor="">Entry Validity</label>
             <select>

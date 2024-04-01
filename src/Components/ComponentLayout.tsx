@@ -12,16 +12,16 @@ export default function ComponentLayout() {
         <Topbar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
       </div>
 
-      <Sidebar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
-      {
-        showSidebar &&(
 
-            <div className="h-screen">
-              <OverLaySideBar showSidebar={showSidebar} setShowSidebar={setShowSidebar}/>
-            </div>
-          
-        )
-      }
+        <Sidebar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
+      {showSidebar && (
+        <div className="h-screen">
+          <OverLaySideBar
+            showSidebar={showSidebar}
+            setShowSidebar={setShowSidebar}
+          />
+        </div>
+      )}
     </>
   );
 }

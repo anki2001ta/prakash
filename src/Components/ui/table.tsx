@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Title } from "@/components/atomics";
 import { PencilSimpleIcon, PlusIcon, SortAscendingIcon } from "@/assets/icons";
 import ButtonLoader from "../Loaders/buttonLoader";
-import { Pagination } from "@mui/material";
+import { Pagination, useMediaQuery } from "@mui/material";
 
 interface TableProps {
   data: {
@@ -60,13 +60,15 @@ const TableComponent: React.FC<TableProps> = ({
     return rowData[header.key];
   };
 
+  const isMobile = useMediaQuery("(max-width: 568px)");
+
   return (
     <>
       <div className="h-full p-6 space-y-6">
        {
         data?.length>0 ? (
-          <section className="p-6 bg-white rounded-lg">
-          <nav className="flex items-center justify-between mb-8">
+          <section className="p-6 h-full bg-white rounded-lg">
+          <nav className="mb-8 flex flex-col items-start gap-8 md:flex-row md:items-center justify-between">
             <Title size="sm" variant="default" className="text-netral-25">
               {title}
             </Title>
@@ -103,7 +105,7 @@ const TableComponent: React.FC<TableProps> = ({
           </div>
           <div className="overflow-x-auto">
                 <table
-                  className={`w-full table-auto ${
+                  className={`w-full table-auto  ${
                     isLoading ? "h-[400px]" : ""
                   }`}
                 >
@@ -148,25 +150,26 @@ const TableComponent: React.FC<TableProps> = ({
                     )}
                   </tbody>
                 </table>
-                <div className="w-full flex justify-center my-2">
-                  <Pagination
-                    sx={{
-                      "& .Mui-selected": {
-                        backgroundColor: "#9acd32 !important", // Set background color for selected button
-                      },
-                      "& .MuiPaginationItem-root:hover": {
-                        backgroundColor: "transparent", // Set background color to none on hover
-                        color: "#000",
-                      },
-                    }}
-                    count={10}
-                    color="primary"
-                  />
-                </div>
           </div>
+          <div className="w-full flex justify-center my-2">
+          <Pagination
+                sx={{
+                  "& .Mui-selected": {
+                    backgroundColor: "#9acd32 !important", // Set background color for selected button
+                  },
+                  "& .MuiPaginationItem-root:hover": {
+                    backgroundColor: "transparent", // Set background color to none on hover
+                    color: "#000",
+                  },
+                }}
+                count={10}
+                color="primary"
+                size={isMobile ? "small":"large"}
+              />
+                </div>
         </section>
         ):
-        <div className="h-screen w-full flex items-center justify-center">
+        <div className="h-full w-full flex items-center justify-center">
        {
         isLoading ? (<ButtonLoader/>):<p> No Data Available</p>
        }

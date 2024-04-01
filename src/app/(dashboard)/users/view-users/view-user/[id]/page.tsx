@@ -75,8 +75,8 @@ const  Page=({ params }: { params: { id: string } })=> {
   
   return (
     <div>
-      <section className="relative rounded-lg-10 bg-white p-6">
-        <nav className="mb-8 flex items-center justify-between">
+      <section className="rounded-lg-10 bg-white p-6">
+        <nav className="mb-8 flex flex-col gap-2 md:flex-row items-center justify-between">
           <Title size="lg" variant="default">
             Personal Details
           </Title>

@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <Head>
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
       </Head>
-      <body className="h-screen UI-Ecommerce flex">
+      <body className=" h-screen UI-Ecommerce flex">
         <ComponentLayout />
         <main className="bg-netral-20/50 w-full min-h-screen overflow-scroll mt-[92px]">
           {children}
