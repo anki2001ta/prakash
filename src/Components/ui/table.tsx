@@ -152,7 +152,7 @@ const TableComponent: React.FC<TableProps> = ({
                   <Pagination
                     sx={{
                       "& .Mui-selected": {
-                        backgroundColor: "#9acd32", // Set background color for selected button
+                        backgroundColor: "#9acd32 !important", // Set background color for selected button
                       },
                       "& .MuiPaginationItem-root:hover": {
                         backgroundColor: "transparent", // Set background color to none on hover

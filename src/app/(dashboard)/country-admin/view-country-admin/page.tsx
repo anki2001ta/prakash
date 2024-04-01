@@ -20,28 +20,6 @@ interface UserData {
   mobile: string;
 }
 
-const deleteUserHandler = (userId: any) => {
-  const url = `https://techc2.be/admin/user/delete/${userId}`;
-  fetch(url, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => {
-      if (response.status === 200) {
-        console.log("User deleted successfully");
-        toast.success("Data deleted");
-        fetchall();
-      } else {
-        console.log("Error deleting user");
-        toast.error("Error while deleting data");
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-};
 
 const renderImageCell = (rowData: UserData) => {
   return rowData.images?.map((image: string, index: number) => (

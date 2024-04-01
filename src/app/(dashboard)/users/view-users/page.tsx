@@ -19,45 +19,27 @@ interface UserData {
   email: string;
   mobile: string;
   _id: string;
+  status?:string;
 } 
 
-const deleteUserHandler = (userId: any) => {
-  const url = `https://techc2.be/admin/user/delete/${userId}`;
-  fetch(url, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => {
-      if (response.status === 200) {
-        console.log("User deleted successfully");
-        toast.success("Data deleted")
-        fetchall();
-      } else {
-        console.log("Error deleting user");
-        toast.error("Error while deleting data")
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+const renderImageCell = (rowData: UserData) => {
+  return (
+    <div>
+      {rowData.images?.map((image: string, index: number) => (
+        <div key={index} style={{ display: "flex", alignItems: "center" }}>
+          <Image
+            src={image}
+            alt="User"
+            width={50}
+            height={50}
+            style={{ marginRight: "5px" }}
+          />
+        </div>
+      ))}
+    </div>
+  );
 };
 
-const renderImageCell = (rowData: UserData) => {
-  return rowData.images?.map((image: string, index: number) => (
-    <div key={index} style={{ display: "flex", alignItems: "center" }}>
-      {image && 
-      <Image
-        src={image}
-        alt="User"
-        width={50}
-        height={50}
-        style={{ marginRight: "5px" }}
-      />}
-    </div>
-  ));
-};
 
 
 
@@ -156,7 +138,7 @@ const ViewUser = () => {
   };
   
 
-  const renderActionCell = (index: number,user:any) => {
+  const renderActionCell = (data:any) => {
     return (
       <Menu as="div" className="relative inline-block text-left">
   <div>
@@ -176,7 +158,7 @@ const ViewUser = () => {
     leaveFrom="transform opacity-100 scale-100"
     leaveTo="transform opacity-0 scale-95"
   >
-    <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex={-1}>
+    <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"  aria-orientation="vertical" aria-labelledby="menu-button">
       <div className="py-1" role="none">
         <Menu.Item>
           {({ active }) => (
@@ -187,7 +169,7 @@ const ViewUser = () => {
               role="menuitem"
               tabIndex={-1}
               id="menu-item-0"
-              onClick={() => router.push(`/users/view-users/view-user/${user?._id}`)}
+              onClick={() => router.push(`/users/view-users/view-user/${data?._id}`)}
             >
               View
             </button>
@@ -205,7 +187,7 @@ const ViewUser = () => {
               onClick={() => 
                 
                 
-                router.push(`/users/view-users/edit-user/${user?._id}`)}
+                router.push(`/users/view-users/edit-user/${data?._id}`)}
 
                 
               // onClick={()=>{setIsOpenEditModal(true)}}
@@ -223,7 +205,7 @@ const ViewUser = () => {
               role="menuitem"
               tabIndex={-1}
               id="menu-item-3"
-              onClick={() => router.push(`/users/recieved-gift-history/${user?._id}`)}
+              onClick={() => router.push(`/users/recieved-gift-history/${data?._id}`)}
             >
               Recieved Gift History
             </button>
@@ -238,7 +220,7 @@ const ViewUser = () => {
               role="menuitem"
               tabIndex={-1}
               id="menu-item-4"
-              onClick={() => router.push(`/users/send-gift-history/${user?._id}`)}
+              onClick={() => router.push(`/users/send-gift-history/${data?._id}`)}
             >
               Send Gift History
             </button>
@@ -253,7 +235,7 @@ const ViewUser = () => {
               role="menuitem"
               tabIndex={-1}
               id="menu-item-5"
-              onClick={() => router.push(`/users/coin-history/${user?._id}`)}
+              onClick={() => router.push(`/users/coin-history/${data?._id}`)}
             >
               Coin History
             </button>
@@ -268,7 +250,7 @@ const ViewUser = () => {
               role="menuitem"
               tabIndex={-1}
               id="menu-item-6"
-              onClick={() => router.push(`/users/live-user-history/${user?._id}`)}
+              onClick={() => router.push(`/users/live-user-history/${data?._id}`)}
             >
               Live History
             </button>
@@ -335,11 +317,11 @@ const ViewUser = () => {
       </span>
     ),
   },
-    {
-      key: "action",
-      label: "Action",
-      renderCell: (_, index) => renderActionCell(index,_),
-    }
+  {
+    key: "action",
+    label: "Action",
+    renderCell: renderActionCell,
+  }
   ];
 
   const handleSearch = (searchTerm: string) => {
@@ -357,15 +339,10 @@ const ViewUser = () => {
   return (
   <>
     <TableComponent 
-    // handleSearch={handleSearch}  
+ 
     isLoading={isLoading} 
     
     data={userData} headers={headerData} title="View Users" />
-    {/* <PaginationComponent
-     currentPage={currentPage}
-     totalPages={totalPages}
-     onPageChange={handlePageChange}
-    /> */}
     <ModalComponent
         onAction={()=>{}}
         isOpen={openDeleteModal}

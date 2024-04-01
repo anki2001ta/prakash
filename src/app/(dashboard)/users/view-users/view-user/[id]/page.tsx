@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import withAuth from "@/Components/withAuth";
 
 const  Page=({ params }: { params: { id: string } })=> {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const fetchData = async () => {
     try {
