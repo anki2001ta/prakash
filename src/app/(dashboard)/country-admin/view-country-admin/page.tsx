@@ -9,6 +9,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { Input } from "@/Components/atomics";
 import { Delete, Edit } from "@mui/icons-material";
 import EditManager from "@/Components/EditManager";
+import withAuth from "@/Components/withAuth";
 
 interface UserData {
   userId: string;
@@ -431,4 +432,4 @@ const handleDeleteAdmin =async()=> {
   );
 };
 
-export default ViewUser;
+export default withAuth(ViewUser);

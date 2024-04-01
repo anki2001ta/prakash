@@ -84,7 +84,7 @@ const LoginForm = () => {
       if (data?.status === 1) {
         setIsLoading(true);
         localStorage &&
-          localStorage.setItem(`${endpoint}Token`, data?.data?.token);
+          localStorage.setItem(`token`, data?.data?.token);
         localStorage && localStorage.setItem(`username`, data?.data?.username);
         selectedValue && localStorage.setItem(`role`, selectedValue);
         router?.push("/");

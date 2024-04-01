@@ -9,6 +9,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { Input } from "@/Components/atomics";
 import { Delete, Edit } from "@mui/icons-material";
 import EditManager from "@/Components/EditManager";
+import withAuth from "@/Components/withAuth";
 
 interface UserData {
   userId: string;
@@ -19,28 +20,7 @@ interface UserData {
   mobile: string;
 }
 
-const deleteUserHandler = (userId: any) => {
-  const url = `https://techc2.be/admin/user/delete/${userId}`;
-  fetch(url, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => {
-      if (response.status === 200) {
-        console.log("User deleted successfully");
-        toast.success("Data deleted");
-        fetchall();
-      } else {
-        console.log("Error deleting user");
-        toast.error("Error while deleting data");
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-};
+
 
 const renderImageCell = (rowData: UserData) => {
   return rowData.images?.map((image: string, index: number) => (
@@ -101,7 +81,7 @@ const renderImageCell = (rowData: UserData) => {
 //   }
 // ];
 
-const ViewUser = () => {
+const ViewManager = () => {
   const [userData, setUserData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
@@ -360,4 +340,4 @@ const ViewUser = () => {
   );
 };
 
-export default ViewUser;
+export default withAuth(ViewManager);

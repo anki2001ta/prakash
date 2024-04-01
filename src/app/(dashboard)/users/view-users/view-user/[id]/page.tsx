@@ -6,8 +6,9 @@ import Image from "next/image";
 import ButtonLoader from "@/Components/Loaders/buttonLoader";
 import { Switch } from "@headlessui/react";
 import { useRouter } from "next/navigation";
+import withAuth from "@/Components/withAuth";
 
-export default function Page({ params }: { params: { id: string } }) {
+const  Page=({ params }: { params: { id: string } })=> {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const fetchData = async () => {
@@ -214,3 +215,6 @@ export default function Page({ params }: { params: { id: string } }) {
     </div>
   );
 }
+
+
+export default withAuth(Page);

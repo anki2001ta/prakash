@@ -1,5 +1,5 @@
 "use client";
-import React,{ useEffect, useState,Fragment } from "react";
+import React,{ useEffect, useState,Fragment, useLayoutEffect } from "react";
 import TableComponent from "@/components/ui/table";
 import Image from "next/image";
 import { Menu, Switch, Transition } from '@headlessui/react';
@@ -7,6 +7,9 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import ModalComponent from "@/Components/Modal/Modal";
 import { Alerts } from "@/Components/atomics";
+import { redirect } from "next/navigation";
+import withAuth from "@/Components/withAuth";
+import PaginationComponent from "@/Components/ui/Pagination";
 
 interface UserData {
   userId: string;
@@ -61,48 +64,6 @@ const renderImageCell = (rowData: UserData) => {
 
 
 
-// const headerData = [
-//   {
-//     key: "sr.no",
-//     label: "Sr no",
-//   },
-//   {
-//     key: "images",
-//     label: "Image",
-//     renderCell: renderImageCell,
-//   },
-//   {
-//     key: "name",
-//     label: "Username",
-//   },
-//   {
-//     key: "userid",
-//     label: "User Id",
-//   },
-//   {
-//     key: "mobile",
-//     label: "Phone",
-//   },
-//   {
-//     key: "diamonds",
-//     label: "Diamonds",
-//   },
-//   {
-//     key: "status",
-//     label: "Status",
-//     renderCell: (rowData: UserData) => (
-//       <span className={`${rowData?.status === "Active" ? "text-green-500" : "text-red-500"}`}>
-//         {rowData?.status}
-//       </span>
-//     ),
-//   },
-  
-//   {
-//     key: "action",
-//     label: "Action",
-//     renderCell: (_, index : any) => renderActionCell(index),
-//   }
-// ];
 
 
 
@@ -112,6 +73,8 @@ const ViewUser = () => {
   const router = useRouter();
   const [openDeleteModal, setIsOpenDeleteModal]=useState<boolean>(false);
   const [openAlertsSuccess, setOpenAlertsSuccess] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const handleDeleteModal=(id:string)=> {
     setIsOpenDeleteModal(true)
   }
@@ -120,11 +83,17 @@ const ViewUser = () => {
     fetchData();
   }, []);
 
+
+
   const fetchData = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch(`https://fun2fun.live/user/getall`);
+      const response = await fetch(`https://fun2fun.live/user/getall/limitedData?page=${currentPage}&limit=6`);
       const data = await response?.json();
+      // Calculate total pages based on data count
+
+      console.log("data is", data?.data?.length)
+      setTotalPages(Math.ceil(data?.data?.length / 6));
       const modifiedData = data?.data?.map((user: UserData, index: number) => ({
         ...user,
         "sr.no": index + 1,
@@ -180,6 +149,10 @@ const ViewUser = () => {
     } catch (error) {
       console.error("Error toggling user Live ban:", error);
     }
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
   
 
@@ -241,21 +214,6 @@ const ViewUser = () => {
             </button>
           )}
         </Menu.Item>
-        {/* <Menu.Item>
-          {({ active }) => (
-            <button
-              className={`${
-                active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
-              } block px-4 py-2 text-sm w-full text-left`}
-              role="menuitem"
-              tabIndex={-1}
-              id="menu-item-2"
-              onClick={() => handleDeleteModal(deleteUserHandler(user?.userId))}
-            >
-              Delete
-            </button>
-          )}
-        </Menu.Item> */}
         <Menu.Item>
           {({ active }) => (
             <button
@@ -400,7 +358,14 @@ const ViewUser = () => {
   <>
     <TableComponent 
     // handleSearch={handleSearch}  
-    isLoading={isLoading} data={userData} headers={headerData} title="View Users" />
+    isLoading={isLoading} 
+    
+    data={userData} headers={headerData} title="View Users" />
+    {/* <PaginationComponent
+     currentPage={currentPage}
+     totalPages={totalPages}
+     onPageChange={handlePageChange}
+    /> */}
     <ModalComponent
         onAction={()=>{}}
         isOpen={openDeleteModal}
@@ -426,4 +391,4 @@ const ViewUser = () => {
   );
 };
 
-export default ViewUser;
+export default withAuth(ViewUser);

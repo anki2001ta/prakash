@@ -1,10 +1,11 @@
 "use client";
 import ButtonLoader from "@/Components/Loaders/buttonLoader";
 import { Badge, Button, Title } from "@/Components/atomics";
+import withAuth from "@/Components/withAuth";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-export default function Page({ params }: { params: { id: string } }) {
+const Page=({ params }: { params: { id: string } })=> {
   const [data, setData] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -148,3 +149,6 @@ export default function Page({ params }: { params: { id: string } }) {
     </>
   );
 }
+
+
+export default withAuth(Page);

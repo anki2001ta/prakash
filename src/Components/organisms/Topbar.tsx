@@ -18,7 +18,13 @@ import {
 } from "@/assets/icons"
 import Link from "next/link"
 
-const Topbar: React.FC = () => {
+
+interface TopBarProps{
+  showSidebar:boolean;
+  setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Topbar: React.FC<TopBarProps>=({showSidebar, setShowSidebar})  => {
   const [role, setRole] = useState<string>("");
   const [username, setUserName]= useState<string>("");
 
@@ -35,15 +41,32 @@ const Topbar: React.FC = () => {
       className={`relative flex w-full items-center justify-between
       bg-black px-8 py-4 shadow-sm`}
     >
-      <div className='relative w-[24rem]'>
-        {/* <MagnifyingGlassIcon className='absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 stroke-netral-80 stroke-1.5 text-netral-80' />
-
-        <input
-          type='text'
-          className='w-full rounded-lg border border-netral-20 bg-netral-20/75 px-3.5 py-2.5 pl-12 text-body-base font-normal text-netral-80 outline-none ring-2 ring-transparent transition-all duration-300 ease-out placeholder:text-netral-50 focus:border-primary-main focus:ring-primary-surface'
-          placeholder='What are you looking for'
-        /> */}
-      </div>
+  <div className="flex items-center gap-3 ">
+    <div className="md:hidden" onClick={() => setShowSidebar(!showSidebar)}>
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+        <path
+          className="text-white"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-miterlimit="10"
+          stroke-width="2"
+          d="M4 7h22M4 15h22M4 23h22"
+        ></path>
+      </svg>
+    </div>
+    <Link href="/" className="flex items-center gap-2">
+      <Image
+        src="/useFun.png"
+        alt="usefun"
+        width={600}
+        height={600}
+        className="h-7 w-7 2xl:h-8 2xl:w-8"
+      />
+      <h5 className="text-body-xl font-semibold text-white uppercase">
+        DASHBOARD
+      </h5>
+    </Link>
+  </div>
 
       <div className='flex items-center gap-5'>
         <Menu as='div' className='relative inline-block text-left'>
@@ -203,7 +226,7 @@ const Topbar: React.FC = () => {
           >
             <Menu.Items
               as='div'
-              className='absolute right-0 top-16 mt-2 w-64 origin-top-right divide-y divide-gray-100 rounded-lg-10 bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'
+              className='absolute right-0 z-[9999] top-16 mt-2 w-64 origin-top-right divide-y divide-gray-100 rounded-lg-10 bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'
             >
               <div className='p-3'>
                 <Menu.Item>

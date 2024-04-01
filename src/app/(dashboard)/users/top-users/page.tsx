@@ -4,6 +4,7 @@ import TableComponent from "@/components/ui/table";
 import Image from "next/image";
 import ModalComponent from "@/Components/Modal/Modal";
 import { Delete } from "@mui/icons-material";
+import withAuth from "@/Components/withAuth";
 
 interface UserData {
   images?: string[];
@@ -44,18 +45,23 @@ const PageComponent: React.FC = () => {
   };
 
   const renderImageCell = (rowData: UserData) => {
-    return rowData.images?.map((image: string, index: number) => (
-      <div key={index} style={{ display: "flex", alignItems: "center" }}>
-        <Image
-          src={image}
-          alt="User"
-          width={50}
-          height={50}
-          style={{ marginRight: "5px" }}
-        />
+    return (
+      <div>
+        {rowData.images?.map((image: string, index: number) => (
+          <div key={index} style={{ display: "flex", alignItems: "center" }}>
+            <Image
+              src={image}
+              alt="User"
+              width={50}
+              height={50}
+              style={{ marginRight: "5px" }}
+            />
+          </div>
+        ))}
       </div>
-    ));
+    );
   };
+  
 
   const handleRemoveUser = (data: any) => {
     console.log("data", data);
@@ -150,4 +156,4 @@ const PageComponent: React.FC = () => {
   );
 };
 
-export default PageComponent;
+export default withAuth(PageComponent);

@@ -9,7 +9,7 @@ interface IModalProps {
   onAction: () => void;
   children: any;
   size: "2xl" | "4xl" | "5xl";
-  loading: boolean;
+  loading?: boolean;
 }
 
 export default function ModalComponent(props: IModalProps) {

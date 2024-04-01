@@ -1,4 +1,5 @@
 "use client";
+import withAuth from "@/Components/withAuth";
 import { Button, Title } from "@/components/atomics";
 import Form from "@/components/ui/form";
 import React from "react";
@@ -6,7 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 
-const page = () => {
+const Page = () => {
   const [formData, setFormData] = React.useState({
     userId: '',
     officialId: ''
@@ -94,4 +95,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default withAuth(Page)

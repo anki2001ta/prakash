@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Title } from "@/components/atomics";
 import { PencilSimpleIcon, PlusIcon, SortAscendingIcon } from "@/assets/icons";
 import ButtonLoader from "../Loaders/buttonLoader";
+import { Pagination } from "@mui/material";
 
 interface TableProps {
   data: {
@@ -11,8 +12,8 @@ interface TableProps {
   title: string;
   isLoading?: boolean;
   isAdd?: boolean;
-  onAdd?:()=>void;
-  addButtonLabel?:string;
+  onAdd?: () => void;
+  addButtonLabel?: string;
 }
 
 interface Header {
@@ -28,7 +29,7 @@ const TableComponent: React.FC<TableProps> = ({
   isLoading,
   isAdd = false,
   onAdd,
-  addButtonLabel
+  addButtonLabel,
 }) => {
   const convertToCSV = () => {
     if (!data) return;
@@ -61,19 +62,28 @@ const TableComponent: React.FC<TableProps> = ({
 
   return (
     <>
-      <div className="relative p-6 space-y-6">
-        <section className="relativ min-h-screen p-6 bg-white rounded-lg">
+      <div className="h-full p-6 space-y-6">
+       {
+        data?.length>0 ? (
+          <section className="p-6 bg-white rounded-lg">
           <nav className="flex items-center justify-between mb-8">
             <Title size="sm" variant="default" className="text-netral-25">
               {title}
             </Title>
             <div className="flex gap-2 items-center">
-              <Button size="sm" variant="primary-bg" onClick={convertToCSV}>
-                Export CSV
-                <SortAscendingIcon className="w-4 h-4 stroke-2" />
-              </Button>
+              {data?.length > 0 && (
+                <Button size="sm" variant="primary-bg" onClick={convertToCSV}>
+                  Export CSV
+                  <SortAscendingIcon className="w-4 h-4 stroke-2" />
+                </Button>
+              )}
               {isAdd && (
-                <Button size="sm" variant="default-bg"  className="bg-netral-25" onClick={onAdd}>
+                <Button
+                  size="sm"
+                  variant="default-bg"
+                  className="bg-netral-25"
+                  onClick={onAdd}
+                >
                   {addButtonLabel}
                   <PlusIcon className="w-4 h-4 stroke-2" />
                 </Button>
@@ -81,61 +91,87 @@ const TableComponent: React.FC<TableProps> = ({
             </div>
           </nav>
           <div className="flex justify-end mb-6">
-            <input
-              type="text"
-              autoComplete="email"
-              required
-              placeholder="Search Here"
-              className="w-72 px-4 py-2 rounded-md border border-gray-300 shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-netral-25 sm:text-sm"
-            />
+            {data?.length > 0 && (
+              <input
+                type="text"
+                autoComplete="email"
+                required
+                placeholder="Search Here"
+                className="w-72 px-4 py-2 rounded-md border border-gray-300 shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-netral-25 sm:text-sm"
+              />
+            )}
           </div>
           <div className="overflow-x-auto">
-            <table
-              className={`w-full table-auto ${isLoading ? "h-[400px]" : ""}`}
-            >
-              <thead className="font-semibold text-left bg-netral-15  w-[400px]">
-                <tr>
-                  {headers?.map((header) => (
-                    <th
-                      key={header.key}
-                      className={`px-4 py-3 whitespace-nowrap`}
-                    >
-                      {header.label}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-netral-20">
-                {isLoading ? (
-                  <tr>
-                    <td
-                      colSpan={headers.length}
-                      className="px-4 py-4 text-center"
-                    >
-                      <div className="relative">
-                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                          <ButtonLoader />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                ) : (
-                  data?.map((item, rowIndex) => (
-                    <tr key={rowIndex}>
-                      {headers.map((header) => (
-                        <td key={header.key} className="px-4 py-4 ">
-                          {header.renderCell
-                            ? renderCell(item, header)
-                            : item[header.key]}
-                        </td>
+                <table
+                  className={`w-full table-auto ${
+                    isLoading ? "h-[400px]" : ""
+                  }`}
+                >
+                  <thead className="font-semibold text-left bg-netral-15  w-[400px]">
+                    <tr>
+                      {headers?.map((header) => (
+                        <th
+                          key={header.key}
+                          className={`px-4 py-3 whitespace-nowrap`}
+                        >
+                          {header.label}
+                        </th>
                       ))}
                     </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
+                  </thead>
+                  <tbody className="divide-y divide-netral-20">
+                    {isLoading ? (
+                      <tr>
+                        <td
+                          colSpan={headers.length}
+                          className="px-4 py-4 text-center"
+                        >
+                          <div className="relative">
+                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                              <ButtonLoader />
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    ) : (
+                      data?.map((item, rowIndex) => (
+                        <tr key={rowIndex}>
+                          {headers.map((header) => (
+                            <td key={header.key} className="px-4 py-4 ">
+                              {header.renderCell
+                                ? renderCell(item, header)
+                                : item[header.key]}
+                            </td>
+                          ))}
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+                <div className="w-full flex justify-center my-2">
+                  <Pagination
+                    sx={{
+                      "& .Mui-selected": {
+                        backgroundColor: "#9acd32", // Set background color for selected button
+                      },
+                      "& .MuiPaginationItem-root:hover": {
+                        backgroundColor: "transparent", // Set background color to none on hover
+                        color: "#000",
+                      },
+                    }}
+                    count={10}
+                    color="primary"
+                  />
+                </div>
           </div>
         </section>
+        ):
+        <div className="h-screen w-full flex items-center justify-center">
+       {
+        isLoading ? (<ButtonLoader/>):<p> No Data Available</p>
+       }
+      </div>
+       }
       </div>
     </>
   );
