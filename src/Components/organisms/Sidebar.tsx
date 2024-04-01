@@ -76,7 +76,7 @@ const Sidebar: React.FC<SideBarProps>=({showSidebar, setShowSidebar})=> {
 
   <aside
   id="sidebar"
-  className="hidden 2xl:flex Sidebar h-full  mt-12 w-64 overflow-y-auto overflow-x-hidden bg-black px-6 py-4 pt-8 shadow-sm 2xl:w-96 2xl:pt-10"
+  className="hidden  2xl:flex Sidebar  min-h-[1000px]  mt-12 w-64 overflow-y-auto overflow-x-hidden bg-black px-6 py-4 pt-8 shadow-sm 2xl:w-96 2xl:pt-10"
   style={{
     scrollbarWidth: "none",
     msOverflowStyle: "none",
@@ -85,7 +85,7 @@ const Sidebar: React.FC<SideBarProps>=({showSidebar, setShowSidebar})=> {
 >
 
 
-  <nav className="mt-10 flex w-full flex-col items-start gap-3">
+  <nav  className="mt-10 flex w-full flex-col items-start gap-3">
     <SidebarMenu
       icon={<HouseSimpleIcon />}
       name="HOME"
@@ -94,7 +94,7 @@ const Sidebar: React.FC<SideBarProps>=({showSidebar, setShowSidebar})=> {
       exact
     />
     {/* Users */}
-    {role !== "Manager" && (
+    {role !== "Manager" && role!=="Admin" && (
       <SidebarMenu
         active={showUsersMenu}
         onClick={() => setShowUsersMenu(!showUsersMenu)}
@@ -104,7 +104,9 @@ const Sidebar: React.FC<SideBarProps>=({showSidebar, setShowSidebar})=> {
       />
     )}
 
-    <SidebarExpand show={showUsersMenu}>
+  {
+    role!=="Admin" &&(
+      <SidebarExpand show={showUsersMenu}>
       <SidebarMenu
         name="Add Official  Users"
         variant="expand"
@@ -129,7 +131,9 @@ const Sidebar: React.FC<SideBarProps>=({showSidebar, setShowSidebar})=> {
         href="/users/push-notifications"
       />
     </SidebarExpand>
-    {role !== "Manager" && (
+    )
+  }
+    {role !== "Manager" &&  role!=="Admin" && (
       <SidebarMenu
         active={showManager}
         onClick={() => setShowManager(!showManager)}
@@ -147,13 +151,17 @@ const Sidebar: React.FC<SideBarProps>=({showSidebar, setShowSidebar})=> {
       />
     </SidebarExpand>
 
+{
+  role!=="Admin"&&(
     <SidebarMenu
-      active={showCountryAdmin}
-      onClick={() => setShowCountryAdmin(!showCountryAdmin)}
-      icon={<Flag />}
-      name="Country Admin"
-      variant="sub-menu"
-    />
+    active={showCountryAdmin}
+    onClick={() => setShowCountryAdmin(!showCountryAdmin)}
+    icon={<Flag />}
+    name="Country Admin"
+    variant="sub-menu"
+  />
+  )
+}
 
     <SidebarExpand show={showCountryAdmin}>
       <SidebarMenu

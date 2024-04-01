@@ -7,6 +7,7 @@ import Select from "react-select";
 import { useRouter } from "next/navigation";
 import { Alerts, Button, Input, Title } from "@/components/atomics";
 import { PencilSimpleIcon } from "@/assets/icons";
+import { ArrowBack } from "@mui/icons-material";
 
 const Page = ({ params }: { params: { id: string } }) => {
   console.log("parmas id is", params);
@@ -392,17 +393,24 @@ const Page = ({ params }: { params: { id: string } }) => {
     }
   };
 
+  const router= useRouter();
+
   return (
     <>
-      <div className="relative h-[calc(100vh_-_80px)] p-6">
+      <div className="relative mt-16 h-[calc(100vh_-_80px)] p-6">
+
         <div className="space-y-6">
           <h1 className="text-heading-sm font-semibold">Edit</h1>
           <section className="relative space-y-6 rounded-lg-10 bg-white p-6">
+          <div className="md:hidden" onClick={()=>router.back()}>
+       <ArrowBack className="h-8 text-netral-25 w-8"/>
+       </div>
             <div className="flex w-full justify-between items-center">
               <Title size="lg" variant="default">
                 User Information
               </Title>
-              <Button
+           <div className="flex gap-2 items-center">
+           <Button
                 size="md"
                 variant="primary-bg"
               onClick={handleSubmit}
@@ -410,6 +418,15 @@ const Page = ({ params }: { params: { id: string } }) => {
                 <PencilSimpleIcon className="h-4 w-4 stroke-[4px]" />
                 Edit
               </Button>
+              <Button
+                  size="sm"
+                  variant="default-bg"
+                  className="hidden md:flex bg-netral-25 py-[13px] px-6 text-[20px]"
+                  onClick={()=>router.back()}
+                >
+               Back
+                </Button>
+           </div>
             </div>
             <div className="mt-[...]">
               {/* Display user images */}

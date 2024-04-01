@@ -23,7 +23,7 @@ const SidebarMenu: React.FC<SidebarMenu> = ({
   name,
   onClick,
   variant,
-  exact
+  exact,
 }) => {
  
   const currentActive = usePathname()
@@ -61,7 +61,7 @@ const SidebarMenu: React.FC<SidebarMenu> = ({
           onClick={() => {
             onClick()
           }}
-          className={`relative flex w-full items-center justify-between gap-3 rounded-lg-10 ${
+          className={`relative flex w-[200px] items-center justify-between gap-3 rounded-lg-10 ${
             active ? " text-netral-25" : " text-netral-25"
           } p-3 transition-all duration-300 ease-out hover:bg-gray-900`}
         >
@@ -86,7 +86,7 @@ const SidebarMenu: React.FC<SidebarMenu> = ({
       {variant === "expand" && (
         <Link
           href={`${href}`}
-          className={`relative flex w-full items-center justify-between gap-3 rounded-lg-10 ${
+          className={`relative flex  w-[200px] items-center justify-between gap-3 rounded-lg-10 ${
             currentActive.includes(`${href}`)
               ? "bg-netral-20 text-netral-25"
               : "text-netral-10"

@@ -37,7 +37,7 @@ const Page=({ params }: { params: { id: string } })=> {
 
   return (
     <>
-      <section className="relative rounded-lg-10 bg-white p-6">
+      <section className="relative rounded-lg-10 bg-white mt-20 p-4">
         <nav className="mb-8 flex items-center justify-between">
           <Title size="lg" variant="default">
             Received Gifts
@@ -51,7 +51,7 @@ const Page=({ params }: { params: { id: string } })=> {
         </div>
       ) : (
         <div className="p-4">
-          <div className="mb-6 overflow-x-auto">
+          <div className="mb-6 overflow-x-auto overflow-y-auto" style={{ maxHeight: "calc(100vh - 140px)" }}>
             <table className="w-full table-auto">
               <thead className="bg-netral-15 text-body-sm font-semibold uppercase">
                 <tr>

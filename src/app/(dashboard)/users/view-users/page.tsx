@@ -337,7 +337,7 @@ const ViewUser = () => {
   }
 
   return (
-  <>
+  <div className="mt-20 p-4 h-auto">
     <TableComponent 
  
     isLoading={isLoading} 
@@ -364,7 +364,7 @@ const ViewUser = () => {
         title='Edit'
         desc='Data is Edited Successfully!'
       />
-    </>
+    </div>
   );
 };
 

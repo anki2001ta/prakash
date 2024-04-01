@@ -67,7 +67,7 @@ const LoginForm = () => {
           : selectedValue === "Country Admin"
           ? "master-admin"
           : selectedValue === "Admin"
-          ? "country-admin"
+          ? "admin/official"
           : selectedValue === "Sub Admin"
           ? "country-sub-admin"
           : "";
