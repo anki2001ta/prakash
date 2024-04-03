@@ -38,7 +38,7 @@ const Topbar: React.FC<TopBarProps>=({showSidebar, setShowSidebar})  => {
   }, []);
   return (
     <header
-      className={`fixed top-0 left-0 flex w-full z-[9999] items-center justify-between
+      className={`fixed top-0 left-0 flex w-full z-50 items-center justify-between
       bg-black px-8 py-4 shadow-sm`}
     >
   <div className="flex items-center gap-3 ">

@@ -371,7 +371,7 @@ const handleDeleteAdmin =async()=> {
             value={country}
             onChange={(e) => setCountry(e.target.value)}
           />
-          <Input
+          {/* <Input
             id="manager"
             placeholder=""
             label="Created By"
@@ -379,7 +379,7 @@ const handleDeleteAdmin =async()=> {
             value={manager}
             disabled
             onChange={(e) => setManager(e.target.value)}
-          />
+          /> */}
           <Input
             id="password"
             placeholder=""

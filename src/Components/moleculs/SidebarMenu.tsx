@@ -35,11 +35,11 @@ const SidebarMenu: React.FC<SidebarMenu> = ({
           className={`relative flex w-full items-center justify-between gap-3${
             exact
               ? href === currentActive
-                ? "bg-netral-20 text-netral-25"
-                : "bg-gray-900 text-netral-25"
+                ? "bg-netral-20 w-[200px] text-netral-25"
+                : "bg-gray-900 w-[200px] text-netral-25"
               : currentActive?.includes(`${href}`)
-              ? "bg-netral-20 text-primary-main"
-              : "bg-black text-netral-25"
+              ? "bg-netral-20 w-[200px] text-primary-main"
+              : "bg-black w-[200px] text-netral-25"
           }
           } p-3 transition-all duration-300 ease-out hover:bg-neutral-25`}
         >
@@ -61,7 +61,7 @@ const SidebarMenu: React.FC<SidebarMenu> = ({
           onClick={() => {
             onClick()
           }}
-          className={`relative flex w-[200px] items-center justify-between gap-3 rounded-lg-10 ${
+          className={`relative flex w-full items-center justify-between gap-3 rounded-lg-10 ${
             active ? " text-netral-25" : " text-netral-25"
           } p-3 transition-all duration-300 ease-out hover:bg-gray-900`}
         >
@@ -84,18 +84,20 @@ const SidebarMenu: React.FC<SidebarMenu> = ({
       )}
 
       {variant === "expand" && (
-        <Link
+      <div className="w-[200px]">
+          <Link
           href={`${href}`}
-          className={`relative flex  w-[200px] items-center justify-between gap-3 rounded-lg-10 ${
+          className={`relative flex  w-full items-center justify-between gap-3 rounded-lg-10 ${
             currentActive.includes(`${href}`)
-              ? "bg-netral-20 text-netral-25"
-              : "text-netral-10"
-          } p-3 transition-all duration-300 ease-out hover:bg-gray-900`}
+              ? "bg-netral-20 w-[200px] text-netral-25"
+              : "text-netral-10 w-[200px]"
+          }  p-3 transition-all duration-300 ease-out hover:bg-gray-900`}
         >
           <span className='text-body-sm font-medium 2xl:font-semibold'>
             {name}
           </span>
         </Link>
+      </div>
       )}
     </>
   )

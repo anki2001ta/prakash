@@ -154,7 +154,7 @@ const TableComponent: React.FC<TableProps> = ({
                   </tbody>
                 </table>
           </div>
-          <div className="w-full flex justify-center mt-12">
+          <div className="w-full flex justify-center mt-12 mb-12">
           <Pagination
                 sx={{
                   "& .Mui-selected": {

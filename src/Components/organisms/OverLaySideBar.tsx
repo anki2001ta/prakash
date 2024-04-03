@@ -75,7 +75,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
   };
 
   const DrawerList = (
-    <div className="bg-black h-screen w-72">
+    <div className="bg-black h-screen w-72 z-50">
       <div className="flex items-center justify-between px-2 py-4 ">
         <Link href="/" className="flex items-center gap-2">
           <Image
@@ -93,8 +93,8 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
           <Close className="text-white" />
         </div>
       </div>
-      <nav className="mt-10 flex w-full flex-col items-start gap-3">
-        <div className="w-[80%]"  onClick={() => setShowSidebar(false)}>
+      <nav className="mt-10 flex px-2 w-full flex-col items-start gap-3">
+        <div className="w-full"  onClick={() => setShowSidebar(false)}>
           <SidebarMenu
             icon={<HouseSimpleIcon />}
             name="HOME"
