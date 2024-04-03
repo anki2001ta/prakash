@@ -55,7 +55,7 @@ const Page = () => {
   }
 
   return (
-    <div className="relative p-6 space-y-6">
+    <div className="mt-28 p-6 space-y-6">
       <ToastContainer 
       autoClose={1000}
       position="bottom-right"

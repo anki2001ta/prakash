@@ -61,10 +61,11 @@ const TableComponent: React.FC<TableProps> = ({
   };
 
   const isMobile = useMediaQuery("(max-width: 568px)");
+  
 
   return (
     <>
-      <div className="h-full p-6 space-y-6">
+      <div className="h-screen py-8 mb-12">
        {
         data?.length>0 ? (
           <section className="p-6 h-full bg-white rounded-lg">
@@ -74,13 +75,14 @@ const TableComponent: React.FC<TableProps> = ({
             </Title>
             <div className="flex gap-2 items-center">
               {data?.length > 0 && (
-                <Button size="sm" variant="primary-bg" onClick={convertToCSV}>
+                <Button className="" size="sm" variant="primary-bg" onClick={convertToCSV}>
                   Export CSV
                   <SortAscendingIcon className="w-4 h-4 stroke-2" />
                 </Button>
               )}
               {isAdd && (
-                <Button
+             <div className="flex gap-2 items-center">
+                 <Button
                   size="sm"
                   variant="default-bg"
                   className="bg-netral-25"
@@ -89,6 +91,7 @@ const TableComponent: React.FC<TableProps> = ({
                   {addButtonLabel}
                   <PlusIcon className="w-4 h-4 stroke-2" />
                 </Button>
+             </div>
               )}
             </div>
           </nav>
@@ -151,7 +154,7 @@ const TableComponent: React.FC<TableProps> = ({
                   </tbody>
                 </table>
           </div>
-          <div className="w-full flex justify-center my-2">
+          <div className="w-full flex justify-center mt-12">
           <Pagination
                 sx={{
                   "& .Mui-selected": {

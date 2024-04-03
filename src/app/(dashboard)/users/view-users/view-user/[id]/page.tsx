@@ -7,6 +7,7 @@ import ButtonLoader from "@/Components/Loaders/buttonLoader";
 import { Switch } from "@headlessui/react";
 import { useRouter } from "next/navigation";
 import withAuth from "@/Components/withAuth";
+import { ArrowBack } from "@mui/icons-material";
 
 const  Page=({ params }: { params: { id: string } })=> {
   const [data, setData] = useState<any>(null);
@@ -75,19 +76,33 @@ const  Page=({ params }: { params: { id: string } })=> {
   
   return (
     <div>
-      <section className="rounded-lg-10 bg-white p-6">
-        <nav className="mb-8 flex flex-col gap-2 md:flex-row items-center justify-between">
-          <Title size="lg" variant="default">
+      <section className="rounded-lg-10 bg-white mt-24 p-6">
+       <div className="md:hidden" onClick={()=>router.back()}>
+       <ArrowBack className="h-8 text-netral-25 w-8"/>
+       </div>
+        <nav className="mb-8 mt-[28px] md:mt-0 flex items-center justify-between">
+          <Title className="" size="lg" variant="default">
             Personal Details
           </Title>
 
-          <Button
+         <div className="flex gap-2 items-center">
+         <Button
             size="md"
             variant="primary-bg"
-          onClick={()=>router.push(`/users/view-users/edit-user/${params?.id}`)}
+            className="py-[13px] px-6"
+            onClick={()=>router.push(`/users/view-users/edit-user/${params?.id}`)}
           >
             Edit
           </Button>
+          <Button
+                  size="sm"
+                  variant="default-bg"
+                  className="hidden md:inline-flex bg-netral-25 py-[13px] px-6 text-[20px]"
+                  onClick={()=>router.back()}
+                >
+               Back
+                </Button>
+         </div>
         </nav>
 
         <section className="flex flex-col gap-2 lg:flex-row items-center lg:gap-5">
@@ -116,8 +131,8 @@ const  Page=({ params }: { params: { id: string } })=> {
             <section className="flex  flex-col gap-2 xl:flex-row items-start xl:gap-40">
               <div className="w-72 space-y-1 lg:space-y-1.5">
                 <div className="flex gap-4"></div>
-                <h1 className=" text-netral-50">Bio</h1>
-                <p className="text-[12px]">{data?.bio}</p>
+                <h1 className=" text-netral-50 mt-16">Bio</h1>
+                <p className="text-[12px] mt-4 md:mt-0">{data?.bio}</p>
                
               </div>
 

@@ -320,7 +320,7 @@ const handleDeleteAdmin =async()=> {
   };
 
   return (
-    <>
+    <div className="mt-24 p-4">
       <TableComponent
         onAdd={handleOnAdd}
         isLoading={isLoading}
@@ -414,7 +414,7 @@ const handleDeleteAdmin =async()=> {
         </div> */}
         <div>Edit Modal</div>
       </ModalComponent>
-    </>
+    </div>
   );
 };
 

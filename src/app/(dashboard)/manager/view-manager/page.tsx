@@ -269,7 +269,7 @@ const ViewManager = () => {
 
 
   return (
-    <>
+    <div className="mt-24 p-6">
       <TableComponent
         onAdd={handleOnAdd}
         isLoading={isLoading}
@@ -336,7 +336,7 @@ const ViewManager = () => {
       >
 <EditManager/>
       </ModalComponent>
-    </>
+    </div>
   );
 };
 

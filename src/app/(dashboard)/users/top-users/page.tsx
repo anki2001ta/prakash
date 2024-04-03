@@ -131,7 +131,7 @@ const PageComponent: React.FC = () => {
   ];
 
   return (
-    <div>
+    <div className="mt-20 p-4">
       <TableComponent
         data={userData}
         isLoading={isLoading}

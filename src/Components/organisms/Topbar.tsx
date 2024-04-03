@@ -38,12 +38,12 @@ const Topbar: React.FC<TopBarProps>=({showSidebar, setShowSidebar})  => {
   }, []);
   return (
     <header
-      className={`relative flex w-full items-center justify-between
+      className={`fixed top-0 left-0 flex w-full z-[9999] items-center justify-between
       bg-black px-8 py-4 shadow-sm`}
     >
   <div className="flex items-center gap-3 ">
     <div className="md:hidden" onClick={() => setShowSidebar(!showSidebar)}>
-      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 30 30" aria-hidden="true">
         <path
           className="text-white "
           stroke="currentColor"
@@ -62,9 +62,10 @@ const Topbar: React.FC<TopBarProps>=({showSidebar, setShowSidebar})  => {
         height={600}
         className="h-5 w-5 md:h-6 md:w-6 2xl:h-8 2xl:w-8"
       />
-      <h5 className="text-[12px] md:text-body-xl font-semibold text-white uppercase">
-        DASHBOARD
-      </h5>
+      <div className="md:text-body-xl font-semibold text-white uppercase">
+        <h5 className="text-netral-25 text-[12px] ">USEFUNS</h5>
+        <h5 className="text-white text-[12px]">DASHBOARD</h5>
+      </div>
     </Link>
   </div>
 

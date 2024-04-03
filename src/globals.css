@@ -106,3 +106,10 @@
         transform: rotate(360deg);
     }
     } 
+
+
+    const data=[{},{}]
+
+    const handleDelete(index){
+      data.filter((data,i)=>data[i]!==data[index])
+    }

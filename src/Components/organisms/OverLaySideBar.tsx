@@ -93,95 +93,363 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
           <Close className="text-white" />
         </div>
       </div>
-      <div className="mt-10 flex w-full flex-col items-start gap-3">
-      <SidebarMenu
-      icon={<HouseSimpleIcon />}
-      name="HOME"
-      variant="default"
-      href="/"
-      exact
+      <nav className="mt-10 flex w-full flex-col items-start gap-3">
+        <div className="w-[80%]"  onClick={() => setShowSidebar(false)}>
+          <SidebarMenu
+            icon={<HouseSimpleIcon />}
+            name="HOME"
+            variant="default"
+            href="/"
+            exact
+          />
+        </div>
+        {/* Users */}
+        {role !== "Manager" && role !== "Admin" && (
+          <SidebarMenu
+            active={showUsersMenu}
+            onClick={() => setShowUsersMenu(!showUsersMenu)}
+            icon={<UsersIcon />}
+            name="Users"
+            variant="sub-menu"
+          />
+        )}
+
+        {role !== "Admin" && (
+          <SidebarExpand show={showUsersMenu}>
+            <div className="w-[80%]"  onClick={() => setShowSidebar(false)}>
+              <SidebarMenu
+                name="Add Official  Users"
+                variant="expand"
+                href="/users/add-official-users"
+              />
+            </div>
+
+            <div onClick={() => setShowSidebar(false)}>
+              <SidebarMenu
+                name="View  Users"
+                variant="expand"
+                href="/users/view-users"
+              />
+            </div>
+
+            <div className="w-[80%]"  onClick={() => setShowSidebar(false)}>
+              <SidebarMenu
+                name="Top  Users"
+                variant="expand"
+                href="/users/top-users"
+              />
+            </div>
+
+            <div onClick={() => setShowSidebar(false)}>
+              <SidebarMenu
+                name="Push Notification"
+                variant="expand"
+                href="/users/push-notifications"
+              />
+            </div>
+          </SidebarExpand>
+        )}
+        {role !== "Manager" && role !== "Admin" && (
+            <SidebarMenu
+              active={showManager}
+              onClick={() => setShowManager(!showManager)}
+              icon={<ReceiptIcon />}
+              name="Manager"
+              variant="sub-menu"
+            />
+        )}
+
+        <SidebarExpand show={showManager}>
+          <div className="w-[80%]"  onClick={() => setShowSidebar(false)}>
+            <SidebarMenu
+              name="View Manager"
+              variant="expand"
+              href="/manager/view-manager"
+            />
+          </div>
+        </SidebarExpand>
+
+        {role !== "Admin" && (
+
+            <SidebarMenu
+              active={showCountryAdmin}
+              onClick={() => setShowCountryAdmin(!showCountryAdmin)}
+              icon={<Flag />}
+              name="Country Admin"
+              variant="sub-menu"
+            />
+        )}
+
+        <SidebarExpand show={showCountryAdmin}>
+          <div className="w-[80%]" onClick={() => setShowSidebar(false)}>
+            <SidebarMenu
+              name="View Country Admin"
+              variant="expand"
+              href="/country-admin/view-country-admin"
+            />
+          </div>
+        </SidebarExpand>
+
+        {/* Hosts */}
+
+        {/* <SidebarMenu
+      active={showTransactionsMenu}
+      onClick={() => setShowTransactionsMenu(!showTransactionsMenu)}
+      icon={<ReceiptIcon />}
+      name="Host" 
+      variant="sub-menu"
     />
-    {/* Users */}
-    {role !== "Manager" && (
-      <SidebarMenu
-        active={showUsersMenu}
-        onClick={() => setShowUsersMenu(!showUsersMenu)}
-        icon={<UsersIcon />}
-        name="Users"
-        variant="sub-menu"
-      />
-    )}
 
-    <SidebarExpand show={showUsersMenu}>
+    <SidebarExpand show={showTransactionsMenu}>
       <SidebarMenu
-        name="Add Official  Users"
+        name="Approved Host"
         variant="expand"
-        href="/users/add-official-users"
+        href="/host/approved-host"
+      />
+      <SidebarMenu
+        name="Pending Host"
+        variant="expand"
+        href="/host/pending-host"
       />
 
       <SidebarMenu
-        name="View  Users"
+        name="Rejected Host"
         variant="expand"
-        href="/users/view-users"
+        href="/host/rejected-host"
+      />
+      <SidebarMenu
+        name="Host Reports"
+        variant="expand"
+        href="/host/host-reports"
+      />
+    </SidebarExpand> */}
+
+        {/* AGENCY */}
+
+        {/* <SidebarMenu
+      active={showAgency}
+      onClick={() => setShowAgencyMenu(!showAgency)}
+      icon={<ReceiptIcon />}
+      name="Agency"
+      variant="sub-menu"
+    />
+
+    <SidebarExpand show={showAgency}>
+      <SidebarMenu
+        name="Add Agency"
+        variant="expand"
+        href="/agency/add-agency"
+      />
+      <SidebarMenu
+        name="View Agency"
+        variant="expand"
+        href="/agency/agency-reports"
       />
 
       <SidebarMenu
-        name="Top  Users"
+        name="Top Agency"
         variant="expand"
-        href="/users/top-users"
+        href="/agency/banned-agency"
+      />
+      <SidebarMenu
+        name="Banned Agency"
+        variant="expand"
+        href="/agency/top-agency"
       />
 
       <SidebarMenu
-        name="Push Notification"
+        name="Agency Reports"
         variant="expand"
-        href="/users/push-notifications"
+        href="/agency/view-agency"
       />
-    </SidebarExpand>
-    {role !== "Manager" && (
-      <SidebarMenu
-        active={showManager}
-        onClick={() => setShowManager(!showManager)}
-        icon={<ReceiptIcon />}
-        name="Manager"
-        variant="sub-menu"
-      />
-    )}
+    </SidebarExpand> */}
 
-    <SidebarExpand show={showManager}>
+        {/* Shop */}
+        {/* 
+    <SidebarMenu
+      active={showShop}
+      onClick={() => setShowShop(!showShop)}
+      icon={<ReceiptIcon />}
+      name="Shop"
+      variant="sub-menu"
+    /> */}
+
+        {/* <SidebarExpand show={showShop}>
       <SidebarMenu
-        name="View Manager"
+        name="Add Room Wallpaper"
         variant="expand"
-        href="/manager/view-manager"
+        href="/transactions/manage-transaction"
+      />
+      <SidebarMenu
+        name="View Room Wallpaper"
+        variant="expand"
+        href="/transactions/manage-return"
+      />
+
+      <SidebarMenu
+        name="Add Frames"
+        variant="expand"
+        href="/transactions/manage-return"
+      />
+      <SidebarMenu
+        name="View Frames"
+        variant="expand"
+        href="/transactions/manage-return"
+      />
+
+      <SidebarMenu
+        name="Add Vehicle"
+        variant="expand"
+        href="/transactions/manage-return"
+      />
+
+      <SidebarMenu
+        name="View Vehicle"
+        variant="expand"
+        href="/transactions/manage-transaction"
+      />
+
+      <SidebarMenu
+        name="Add Chat Bubble"
+        variant="expand"
+        href="/transactions/manage-return"
+      />
+      <SidebarMenu
+        name="View Chat Bubble"
+        variant="expand"
+        href="/transactions/manage-return"
+      />
+
+      <SidebarMenu
+        name="Add Special Id"
+        variant="expand"
+        href="/transactions/manage-transaction"
+      />
+      <SidebarMenu
+        name="View Special Id"
+        variant="expand"
+        href="/transactions/manage-return"
+      />
+
+      <SidebarMenu
+        name="Add Vip"
+        variant="expand"
+        href="/transactions/manage-transaction"
+      />
+      <SidebarMenu
+        name="View Vip"
+        variant="expand"
+        href="/transactions/manage-return"
+      />
+      <SidebarMenu
+        name="Add Svip"
+        variant="expand"
+        href="/transactions/manage-return"
+      />
+
+      <SidebarMenu
+        name="View Svip"
+        variant="expand"
+        href="/transactions/manage-return"
+      />
+
+      <SidebarMenu
+        name="Relationship"
+        variant="expand"
+        href="/transactions/manage-return"
+      />
+      <SidebarMenu
+        name="Lock Room"
+        variant="expand"
+        href="/transactions/manage-return"
+      />
+      <SidebarMenu
+        name="Extra Seats"
+        variant="expand"
+        href="/transactions/manage-return"
+      />
+    </SidebarExpand> */}
+
+        {/* Gifts */}
+
+        {/* <SidebarMenu
+      active={showGift}
+      onClick={() => setShowGift(!showGift)}
+      icon={<ReceiptIcon />}
+      name="Gift"
+      variant="sub-menu"
+    />
+
+    <SidebarExpand show={showGift}>
+      <SidebarMenu
+        name="Add Gift Category"
+        variant="expand"
+        href="/transactions/manage-transaction"
+      />
+      <SidebarMenu
+        name="View Gift Category"
+        variant="expand"
+        href="/transactions/manage-return"
+      />
+      <SidebarMenu
+        name="Add Gift"
+        variant="expand"
+        href="/transactions/manage-transaction"
+      />
+      <SidebarMenu
+        name="View Gift"
+        variant="expand"
+        href="/transactions/manage-return"
       />
     </SidebarExpand>
 
     <SidebarMenu
-      active={showCountryAdmin}
-      onClick={() => setShowCountryAdmin(!showCountryAdmin)}
-      icon={<Flag/>}
-      name="Country Admin"
+      active={showAuthMenu}
+      onClick={() => setShowAuthMenu(!showAuthMenu)}
+      icon={<LockSimpleIcon />}
+      name="Authentications"
       variant="sub-menu"
     />
 
-    <SidebarExpand show={showCountryAdmin}>
+    <SidebarExpand show={showAuthMenu}>
+      <SidebarMenu name="Login" variant="expand" href="/auth/login" />
+      <SidebarMenu name="Register" variant="expand" href="/auth/register" />
+
       <SidebarMenu
-        name="View Country Admin"
+        name="Forgot Password"
         variant="expand"
-        href="/country-admin/view-country-admin"
+        href="/auth/forgot-password"
       />
-    </SidebarExpand>
-      </div>
+      <SidebarMenu
+        name="Verify Email"
+        variant="expand"
+        href="/auth/verify-email"
+      />
+      <SidebarMenu
+        name="New Password"
+        variant="expand"
+        href="/auth/new-password"
+      />
+      <SidebarMenu
+        name="Reset Success"
+        variant="expand"
+        href="/auth/success-reset"
+      />
+    </SidebarExpand> */}
+      </nav>
     </div>
   );
 
   return (
-    <Drawer
-      anchor="left"
-      open={showSidebar && isMobile}
-      onClose={toggleDrawer(false)}
-    >
-      {DrawerList}
-    </Drawer>
+    showSidebar && (
+      <Drawer
+        anchor="left"
+        open={showSidebar && isMobile}
+        onClose={toggleDrawer(false)}
+      >
+        {DrawerList}
+      </Drawer>
+    )
   );
 };
 
