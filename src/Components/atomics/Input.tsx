@@ -8,6 +8,7 @@ interface Input {
   id: string
   message?: string
   label?: string
+  modal?:boolean
   logoSrc?: string
   placeholder: string
   type?: "text" | "password"
@@ -28,6 +29,7 @@ const Input: React.FC<Input> = ({
   disabled = false,
   defaultValue,
   id,
+  modal=false,
   label,
   logoSrc,
   message,
@@ -43,7 +45,7 @@ const Input: React.FC<Input> = ({
         <label
           htmlFor={id}
           className={`text-body-base font-semibold ${
-            (variant === "default" && "text-netral-80") ||
+            (variant === "default" && (modal ? "text-white" : "text-netral-80")) ||
             (variant?.includes("error") && "text-error-main")
           }`}
         >

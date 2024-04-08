@@ -32,7 +32,7 @@ const initialFormState={
   }
 }
 
-export default function EditManager(props: EditManagerProps) {
+export default function EditAdmin(props: EditManagerProps) {
   const [editFormData, setEditFormData] = useState<EditFormData>(initialFormState);
   console.log("edit for madata", editFormData)
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -57,7 +57,7 @@ console.log(props, "props")
 const handleEdit =async()=> {
   try {
     setIsLoading(true);
-    const response = await fetch(`https://fun2fun.live/admin/country-admin/update/${editFormData?.id}`, {
+    const response = await fetch(`https://fun2fun.live/admin/official/update/${editFormData?.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'

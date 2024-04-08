@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Transition } from "@headlessui/react";
 import { useMediaQuery } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
@@ -51,28 +51,31 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
   showSidebar,
   setShowSidebar,
 }) => {
-  const [role, setRole] = useState<string>("");
   const isMobile = useMediaQuery("(max-width: 768px)");
   const [showUsersMenu, setShowUsersMenu] = React.useState(false);
-  const [showProductsMenu, setShowProductsMenu] = React.useState(false);
-  const [showTransactionsMenu, setShowTransactionsMenu] = React.useState(false);
-  const [showAuthMenu, setShowAuthMenu] = React.useState(false);
-  const [showAgency, setShowAgencyMenu] = React.useState(false);
-  const [showShop, setShowShop] = React.useState(false);
-  const [showGift, setShowGift] = React.useState(false);
   const [showManager, setShowManager] = React.useState(false);
   const [showCountryAdmin, setShowCountryAdmin] = React.useState(false);
+  const [role, setRole] = useState<string>("");
+  const [showSubAdmin, setShowSubAdmin] = React.useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const value = localStorage.getItem("role");
     if (value !== null) {
       setRole(value);
     }
   }, []);
 
+  const isManager = role === "Manager";
+  const isCountryAdmin = role === "Country Admin";
+  const isAdmin = role === "Master";
+  const isSubAdmin=role==="Admin"
+
+
   const toggleDrawer = (open: boolean) => () => {
     setShowSidebar(open);
   };
+
+
 
   const DrawerList = (
     <div className="bg-black h-screen w-72 z-50">
@@ -114,7 +117,47 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
           />
         )}
 
-        {role !== "Admin" && (
+        {
+          isAdmin &&(
+            <SidebarExpand show={showUsersMenu}>
+            <div className="w-[80%]"  onClick={() => setShowSidebar(false)}>
+              <SidebarMenu
+                name="Add Official  Users"
+                variant="expand"
+                href="/users/add-official-users"
+              />
+            </div>
+
+            <div onClick={() => setShowSidebar(false)}>
+              <SidebarMenu
+                name="View  Users"
+                variant="expand"
+                href="/users/view-users"
+              />
+            </div>
+
+            <div className="w-[80%]"  onClick={() => setShowSidebar(false)}>
+              <SidebarMenu
+                name="Top  Users"
+                variant="expand"
+                href="/users/top-users"
+              />
+            </div>
+
+            <div onClick={() => setShowSidebar(false)}>
+              <SidebarMenu
+                name="Push Notification"
+                variant="expand"
+                href="/users/push-notifications"
+              />
+            </div>
+          </SidebarExpand>
+          )
+        }
+
+
+
+        {/* {role !== "Admin" && (
           <SidebarExpand show={showUsersMenu}>
             <div className="w-[80%]"  onClick={() => setShowSidebar(false)}>
               <SidebarMenu
@@ -148,17 +191,20 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
               />
             </div>
           </SidebarExpand>
-        )}
-        {role !== "Manager" && role !== "Admin" && (
-            <SidebarMenu
-              active={showManager}
-              onClick={() => setShowManager(!showManager)}
-              icon={<ReceiptIcon />}
-              name="Manager"
-              variant="sub-menu"
-            />
+        )} */}
+       {(isManager || isAdmin) && (
+          <SidebarMenu
+            active={showManager}
+            onClick={() => setShowManager(!showManager)}
+            icon={<ReceiptIcon />}
+            name="Manager"
+            variant="sub-menu"
+          />
         )}
 
+
+        {/*
+        
         <SidebarExpand show={showManager}>
           <div className="w-[80%]"  onClick={() => setShowSidebar(false)}>
             <SidebarMenu
@@ -168,17 +214,31 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
             />
           </div>
         </SidebarExpand>
+        
+        */}
 
-        {role !== "Admin" && (
-
+{(isManager || isAdmin) && (
+          <SidebarExpand show={showManager}>
+          <div className="w-[80%]"  onClick={() => setShowSidebar(false)}>
             <SidebarMenu
-              active={showCountryAdmin}
-              onClick={() => setShowCountryAdmin(!showCountryAdmin)}
-              icon={<Flag />}
-              name="Country Admin"
-              variant="sub-menu"
+              name="View Manager"
+              variant="expand"
+              href="/manager/view-manager"
             />
+          </div>
+        </SidebarExpand>
         )}
+
+{(isCountryAdmin || isAdmin || isManager) && (
+          <SidebarExpand show={showCountryAdmin}>
+            <SidebarMenu
+              name="View Country Admin"
+              variant="expand"
+              href="/country-admin/view-country-admin"
+            />
+          </SidebarExpand>
+        )}
+
 
         <SidebarExpand show={showCountryAdmin}>
           <div className="w-[80%]" onClick={() => setShowSidebar(false)}>
@@ -189,6 +249,26 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
             />
           </div>
         </SidebarExpand>
+
+        {(isCountryAdmin || isAdmin || isManager || isSubAdmin)&& (
+          <SidebarMenu
+            active={showSubAdmin}
+            onClick={() => setShowSubAdmin(!showSubAdmin)}
+            icon={<UsersIcon/>}
+            name="Sub Admin"
+            variant="sub-menu"
+          />
+        )}
+
+        {(isCountryAdmin || isAdmin || isManager || isSubAdmin)&& (
+          <SidebarExpand show={showSubAdmin}>
+            <SidebarMenu
+              name="View Sub Admin"
+              variant="expand"
+              href="/sub-admin/view-subadmin"
+            />
+          </SidebarExpand>
+        )}
 
         {/* Hosts */}
 

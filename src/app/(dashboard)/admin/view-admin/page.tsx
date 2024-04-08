@@ -14,6 +14,7 @@ import Select from "react-select";
 import EditManager, { EditFormData } from "@/Components/EditManager";
 import { PlusIcon } from "@/assets/icons";
 import axios from "axios";
+import EditAdmin from "@/Components/EditAdmin";
 
 interface UserData {
   userId: string;
@@ -23,16 +24,16 @@ interface UserData {
   email: string;
   mobile: string;
   countryCode: string;
+  _id?: string;
 }
 
-const ViewUser = () => {
+const ViewAdmin = () => {
   const [userData, setUserData] = useState<UserData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
-  const [countrySelect, setCountrySelect]=useState<boolean>(false)
-
   const [openDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
+  const [countrySelect, setCountrySelect] = useState<boolean>(false);
   const [openAddCountryAdminModal, setOpenAddCountryAdminModal] =
     useState<boolean>(false);
   const [openEditManagerModal, setOpenEditManagerModal] =
@@ -41,6 +42,15 @@ const ViewUser = () => {
   const [userid, setUserId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [selectedCountry, setSelectedCountry] = useState<any>(null);
+  const [countryCode, setCountryCode] = useState<string>("");
+  const [countryFieldOption, setIsCountryFieldOptions] =
+    useState<boolean>(true);
+
+    const [useCountryCode, setUseCountryCode] = useState(() => {
+      const storedManager = localStorage.getItem("countryCode");
+      return storedManager !== null ? storedManager : "";
+    });
+    
 
   const [editFormDetails, setEditFormDetails] = useState<
     EditFormData | undefined
@@ -49,22 +59,16 @@ const ViewUser = () => {
     const storedManager = localStorage.getItem("userId");
     return storedManager !== null ? storedManager : "";
   });
-
-  const [payload, setPayload] = useState<any>({
-    role: localStorage.getItem("role")?.toLowerCase(),
-    userId: localStorage.getItem("userId"),
-  })
-
-  const [isFilter, setIsFilter]= useState<boolean>(false);
-
-  const [countryCode, setCountryCode]= useState<string>("")
   const [isModalLoading, setIsModalLoading] = useState<boolean>(false);
   const [manager, setManager] = useState<string>(() => {
     const storedManager = localStorage.getItem("role");
     return storedManager !== null ? storedManager : "";
   });
-
-  console.log("roles are", manager)
+  const [isFilter, setIsFilter] = useState<boolean>();
+  const [payload, setPayload] = useState<any>({
+    role: localStorage.getItem("role")?.toLowerCase(),
+    userId: localStorage.getItem("userId"),
+  });
 
   const filteredOptions = [
     {
@@ -77,12 +81,11 @@ const ViewUser = () => {
     },
   ];
 
-
   const [selectedCountryByValue, setSelectCountryByValue] = useState<any>(
     filteredOptions[0] || {}
   );
 
-  const handleDeleteModal = (id: string) => {
+  const handleDeleteModal = (id: any) => {
     setIsOpenDeleteModal(true);
     setUserId(id);
   };
@@ -91,9 +94,13 @@ const ViewUser = () => {
     fetchData();
   }, [payload]);
 
+  useEffect(() => {
+    if (manager === "Country Admin") {
+      setIsCountryFieldOptions(false);
+    }
+  }, [manager]);
+
   const handleEditModal = (data: any) => {
-    console.log("data", data);
-    console.log("id", data);
     setEditFormDetails({
       userId: "",
       username: "",
@@ -106,33 +113,21 @@ const ViewUser = () => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(
-        "https://fun2fun.live/admin/country-admin/getByRole",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload), // Assuming payload is defined somewhere in your code
-        }
+      const data = await axios.post(
+        "https://fun2fun.live/admin/official/getByRole",
+        payload
       );
-  
-      if (!response.ok) {
-        throw new Error("Failed to fetch data");
-      }
-  
-      const data = await response.json();
-      console.log("data", data);
-  
-      const modifiedData = data?.data?.map((user: UserData, index: number) => ({
-        ...user,
-        "sr.no": index + 1,
-        name: user.name || "-",
-        mobile: user.mobile || "-",
-        status: user.is_active ? "Active" : "Inactive",
-        userid: user.userId || "-",
-      }));
-  
+      console.log("data response", data);
+      const modifiedData = data?.data?.data?.map(
+        (user: UserData, index: number) => ({
+          ...user,
+          "sr.no": index + 1,
+          name: user.name || "-",
+          mobile: user.mobile || "-",
+          status: user.is_active ? "Active" : "Inactive",
+          userid: user.userId || "-",
+        })
+      );
       setUserData([...modifiedData]);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -140,34 +135,33 @@ const ViewUser = () => {
       setIsLoading(false);
     }
   };
-  
 
   const handleOnAdd = () => {
     setOpenAddCountryAdminModal(true);
   };
 
+  console.log("use country code", useCountryCode)
+
   const handleAddCountryModal = async () => {
+    debugger
     try {
       setIsModalLoading(true);
-      const response = await fetch(
-        `https://fun2fun.live/admin/make/country-admin`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+      const response = await fetch(`https://fun2fun.live/admin/make/official`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username,
+          userId: userid,
+          password: password,
+          countryCode: manager==="Country Admin" ? useCountryCode:selectedCountry?.value,
+          createdBy: {
+            role: manager.toLowerCase(),
+            userId: managerId,
           },
-          body: JSON.stringify({
-            username: username,
-            userId: userid,
-            password: password,
-            countryCode: selectedCountry?.value,
-            createdBy: {
-              role: manager.toLowerCase(),
-              userId: managerId,
-            },
-          }),
-        }
-      );
+        }),
+      });
       fetchData();
       if (response.ok) {
         const data = await response.json();
@@ -175,38 +169,40 @@ const ViewUser = () => {
         setUserName("");
         setUserId("");
         selectedCountry({});
-        setPassword("")
+        setPassword("");
 
         fetchData();
       } else {
         console.error("Failed to add manager:", response.statusText);
         setUserName("");
         setUserId("");
-        setSelectedCountry({label:"", value:""});
-        setPassword("")
+        setSelectedCountry({ label: "", value: "" });
+        setPassword("");
       }
     } catch (error) {
+      fetchData();
       console.error("Error adding manager:", error);
       setUserName("");
       setUserId("");
-      setSelectedCountry({label:"", value:""});
-      setPassword("")
-      fetchData();
+      setSelectedCountry({ label: "", value: "" });
+      setPassword("");
     } finally {
+      fetchData();
       setIsModalLoading(false);
       setOpenAddCountryAdminModal(false);
       setUserName("");
       setUserId("");
-      setSelectedCountry({label:"", value:""});
-      setPassword("")
-      fetchData();
+      setSelectedCountry({ label: "", value: "" });
+      setPassword("");
     }
   };
 
   const handleDeleteAdmin = async () => {
+
+    console.log("user id", userid)
     try {
       setIsModalLoading(true);
-      const url = `https://fun2fun.live/admin/remove/country-admin`;
+      const url = `https://fun2fun.live/admin/remove/official`;
       const response = await fetch(url, {
         method: "DELETE",
         headers: {
@@ -230,45 +226,13 @@ const ViewUser = () => {
       setIsModalLoading(false);
     }
   };
-
-  useEffect(()=>{
-    if(manager==="Master" || manager==="Manager") {
-      setIsFilter(true)
+  useEffect(() => {
+    if (manager === "Master" || manager === "Manager") {
+      setIsFilter(true);
+    } else {
+      setIsFilter(false);
     }
-    else{
-      setIsFilter(false)
-    }
-  },[manager])
-
-  // const getAllDetails=async()=> {
-  //   setIsLoading(true);
-  //   try {
-  //     const response = await fetch(
-  //       `https://fun2fun.live/admin/country-admin/getByRole`,
-  //       {
-  //         method: "POST",
-  //         body: JSON.stringify({
-  //           userId: managerId,
-  //           role: "all",
-  //         }),
-  //       }
-  //     );
-  //     const data = await response.json();
-  //     const modifiedData = data?.data?.map((user: UserData, index: number) => ({
-  //       ...user,
-  //       "sr.no": index + 1,
-  //       name: user.name || "-",
-  //       mobile: user.mobile || "-",
-  //       status: user.is_active ? "Active" : "Inactive",
-  //       userid: user.userId || "-",
-  //     }));
-  //     setUserData([...modifiedData]);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // }
+  }, [manager]);
 
   const headerData = [
     {
@@ -347,11 +311,11 @@ const ViewUser = () => {
         isLoading={isLoading}
         data={userData}
         headers={headerData}
-        addButtonLabel="Add Country Admin"
+        addButtonLabel="Add  Admin"
         isAdd
         isFilter={isFilter}
         filterAction={fetchData}
-        title="View Country Admins"
+        title="View Admins"
         setCountrySelect={setCountrySelect}
         setCountryCode={setCountryCode}
         setPayload={setPayload}
@@ -399,19 +363,21 @@ const ViewUser = () => {
             onChange={(e) => setUserId(e.target.value)}
             modal
           />
-          <div className="w-full">
-            <label className="text-white text-body-base font-semibold mb-6">
-              Country
-            </label>
-            <Select
-              placeholder="Select Country"
-              value={selectedCountry} // Selected values should match one of the options exactly
-              onChange={(selectedOptions) => {
-                setSelectedCountry(selectedOptions);
-              }}
-              options={countriesOptions}
-            />
-          </div>
+          {countryFieldOption && (
+            <div className="w-full">
+              <label className="text-white text-body-base font-semibold mb-6">
+                Country
+              </label>
+              <Select
+                placeholder="Select Country"
+                value={selectedCountry} // Selected values should match one of the options exactly
+                onChange={(selectedOptions) => {
+                  setSelectedCountry(selectedOptions);
+                }}
+                options={countriesOptions}
+              />
+            </div>
+          )}
           <Input
             id="password"
             placeholder=""
@@ -432,7 +398,7 @@ const ViewUser = () => {
         hideButtons
         title="Edit"
       >
-        <EditManager
+        <EditAdmin
           fetchData={fetchData}
           setOpenEditManagerModal={setOpenEditManagerModal}
           formData={editFormDetails}
@@ -442,4 +408,4 @@ const ViewUser = () => {
   );
 };
 
-export default withAuth(ViewUser);
+export default withAuth(ViewAdmin);

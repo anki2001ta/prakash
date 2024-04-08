@@ -311,7 +311,7 @@ const ViewManager = () => {
 
           <Input
             id="userid"
-            placeholder="Enter email address"
+            placeholder="Enter User Id"
             label="Enter User Id"
             variant="default"
             value={userid}
@@ -334,7 +334,8 @@ const ViewManager = () => {
         setIsOpen={setOpenEditManagerModal}
         size="2xl"
       >
-<EditManager/>
+        <div></div>
+{/* <EditManager formData={editFr}/> */}
       </ModalComponent>
     </div>
   );

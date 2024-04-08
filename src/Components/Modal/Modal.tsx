@@ -10,6 +10,7 @@ interface IModalProps {
   children: any;
   size: "2xl" | "4xl" | "5xl";
   loading?: boolean;
+  hideButtons?:boolean;
 }
 
 export default function ModalComponent(props: IModalProps) {
@@ -21,6 +22,8 @@ export default function ModalComponent(props: IModalProps) {
     onAction,
     size,
     loading,
+    hideButtons=false,
+    title,
   } = props;
 
   return (
@@ -32,9 +35,11 @@ export default function ModalComponent(props: IModalProps) {
     >
       <ModalContent>
         <>
-          <div className="text-center mt-4">{props.title}</div>
+        <div className="px-8 py-4 text-white text-[28px]">{title}</div>
           {props.children}
-          <div>
+        {
+          !hideButtons &&(
+            <div>
             <div className="w-full flex justify-end pr-2">
               <div className="flex gap-4 py-4">
                 <button
@@ -74,6 +79,8 @@ export default function ModalComponent(props: IModalProps) {
               </div>
             </div>
           </div>
+          )
+        }
         </>
       </ModalContent>
     </Modal>

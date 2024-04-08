@@ -65,11 +65,11 @@ const LoginForm = () => {
           : selectedValue === "Merchant"
           ? "merchant"
           : selectedValue === "Country Admin"
-          ? "master-admin"
+          ? "admin/country-admin"
           : selectedValue === "Admin"
           ? "admin/official"
           : selectedValue === "Sub Admin"
-          ? "country-sub-admin"
+          ? "admin/bd"
           : "";
       console.log(endpoint, "endpoint");
       const res = await fetch(`https://fun2fun.live/${endpoint}/login`, {
@@ -82,12 +82,14 @@ const LoginForm = () => {
       const data = await res.json();
       console.log(data, "data");
       if (data?.status === 1) {
-        setIsLoading(true);
+        setIsLoading(false);
         localStorage &&
           localStorage.setItem(`token`, data?.data?.token);
         localStorage && localStorage.setItem(`username`, data?.data?.username);
         selectedValue && localStorage.setItem(`role`, selectedValue);
-        router?.push("/");
+        localStorage && localStorage.setItem(`userId`, data?.data?.userId);
+        data?.data?.countryCode && localStorage && localStorage.setItem(`countryCode`, data?.data?.countryCode);
+        // router?.push("/");
       }
     } catch (error) {
       setIsLoading(false);
