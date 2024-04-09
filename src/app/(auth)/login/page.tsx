@@ -63,7 +63,7 @@ const LoginForm = () => {
           : selectedValue === "Manager"
           ? "admin/manager"
           : selectedValue === "Merchant"
-          ? "merchant"
+          ? "admin/merchent"
           : selectedValue === "Country Admin"
           ? "admin/country-admin"
           : selectedValue === "Admin"
@@ -89,7 +89,7 @@ const LoginForm = () => {
         selectedValue && localStorage.setItem(`role`, selectedValue);
         localStorage && localStorage.setItem(`userId`, data?.data?.userId);
         data?.data?.countryCode && localStorage && localStorage.setItem(`countryCode`, data?.data?.countryCode);
-        // router?.push("/");
+        router?.push("/");
       }
     } catch (error) {
       setIsLoading(false);

@@ -54,6 +54,8 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
   const [showCountryAdmin, setShowCountryAdmin] = React.useState(false);
   const [showAdmin, setShowAdmin] = React.useState(false);
   const [showSubAdmin, setShowSubAdmin] = React.useState(false);
+  const [showMerchant, setShowMerchant] = React.useState(false);
+  const [coins, setCoins] = React.useState(false);
   const [role, setRole] = useState<string>("");
 
   useLayoutEffect(() => {
@@ -67,6 +69,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
   const isCountryAdmin = role === "Country Admin";
   const isAdmin = role === "Master";
   const isSubAdmin=role==="Admin"
+  const isMerchant=role==="Merchant"
 
   return (
     <aside
@@ -144,6 +147,26 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
           </SidebarExpand>
         )}
 
+        {(isAdmin || isManager)&& (
+          <SidebarMenu
+            active={showMerchant}
+            onClick={() => setShowMerchant(!showMerchant)}
+            icon={<UsersIcon/>}
+            name="Merchant"
+            variant="sub-menu"
+          />
+        )}
+
+        {(isAdmin || isManager)&& (
+          <SidebarExpand show={showMerchant}>
+            <SidebarMenu
+              name="View Merchant"
+              variant="expand"
+              href="/merchant/view-merchant"
+            />
+          </SidebarExpand>
+        )}
+
         {(isAdmin ||isManager) && (
           <SidebarMenu
             active={showCountryAdmin}
@@ -203,6 +226,28 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
             />
           </SidebarExpand>
         )}
+{/* 
+{(isMerchant) && (
+          <SidebarMenu
+            active={coins}
+            onClick={() => setCoins(!coins)}
+            icon={<UsersIcon/>}
+            name="Seller"
+            variant="sub-menu"
+          />
+        )}
+
+        {(isMerchant) && (
+          <SidebarExpand show={coins}>
+            <SidebarMenu
+              name="Coins"
+              variant="expand"
+              href="/merchant/view-merchant"
+            />
+          </SidebarExpand>
+        )} */}
+
+        
       </nav>
     </aside>
   );
